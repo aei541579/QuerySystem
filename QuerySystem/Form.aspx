@@ -85,6 +85,9 @@
                         if (txtMsg == "success") {
                             window.location = "ConfirmPage.aspx?ID=" + $("#hfID").val();
                         }
+                        if (txtMsg == "noAnswer") {
+                            alert("請作答");
+                        }
                     },
                     error: function (msg) {
                         console.log(msg);

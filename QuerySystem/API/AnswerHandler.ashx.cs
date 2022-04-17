@@ -29,11 +29,19 @@ namespace QuerySystem.API
                 };
                 HttpContext.Current.Session["personModel"] = person;
                 string answerString = context.Request.Form["Answer"];
+                if(string.IsNullOrWhiteSpace(answerString))
+                {
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write("noAnswer");
+                    return;
+                }
+
                 string[] ansArr = answerString.Trim().Split(' ');
                 List<AnswerModel> answerList = new List<AnswerModel>();
-                foreach(string item in ansArr)
+                foreach (string item in ansArr)
                 {
                     string[] ans = item.Split('_');
+
                     AnswerModel answer = new AnswerModel()
                     {
                         PersonID = person.PersonID,
@@ -44,12 +52,11 @@ namespace QuerySystem.API
                     answerList.Add(answer);
                 }
                 HttpContext.Current.Session["answerModel"] = answerList;
-
                 context.Response.ContentType = "text/plain";
-                context.Response.Write("success");                
-                
+                context.Response.Write("success");
+
             }
-           
+
         }
 
         public bool IsReusable
