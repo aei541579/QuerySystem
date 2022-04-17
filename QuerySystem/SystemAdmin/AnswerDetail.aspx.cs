@@ -14,7 +14,6 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _personID;
         private static List<AnswerModel> _answerList;
-        private static PersonModel _person;
         protected void Page_Load(object sender, EventArgs e)
         {
             string personIDstring = Request.QueryString["PersonID"];

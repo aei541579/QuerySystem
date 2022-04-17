@@ -522,6 +522,48 @@ namespace QuerySystem.Managers
 
         }
 
+        public List<StasticModel> GetStasticList(Guid QuestionnaireID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT QuestionNo, Answer, COUNT(QuestionnaireID) AS AnsCount
+                     FROM [Answers]
+                     WHERE QuestionnaireID = @QuestionnaireID
+                     GROUP BY QuestionNo, Answer, QuestionnaireID
+                     ORDER BY QuestionNo, Answer ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@QuestionnaireID", QuestionnaireID);
+
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<StasticModel> stasticList = new List<StasticModel>();
+                        while (reader.Read())
+                        {
+                            StasticModel stastic = new StasticModel()
+                            {
+                                QuestionNo = (int)reader["QuestionNo"],
+                                Answer = reader["Answer"] as string,
+                                AnsCount = (int)reader["AnsCount"]
+                            };
+                            stasticList.Add(stastic);
+                        }
+                        return stasticList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.GetStasticList", ex);
+                throw;
+            }
+
+        }
 
 
 
