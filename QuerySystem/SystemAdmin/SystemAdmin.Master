@@ -1,0 +1,30 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SystemAdmin.master.cs" Inherits="QuerySystem.SystemAdmin.SystemAdmin" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <a href="List.aspx">首頁</a><br />
+        <div id="tabs">
+            <ul>
+                <li><a id="Qdesign" href="QuestionDesign.aspx" runat="server">問卷</a></li>
+                <li><a id="Qdetail" href="QuestionDetail.aspx" runat="server">問題</a></li>
+                <li><a id="Alist" href="AnswerList.aspx" runat="server">填寫資料</a></li>
+                <li><a id="Astastic" href="AnswerStastic.aspx" runat="server">統計</a></li>
+            </ul>
+            <div>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
