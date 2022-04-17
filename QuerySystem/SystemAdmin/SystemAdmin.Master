@@ -15,19 +15,17 @@
 <body>
     <form id="form1" runat="server">
         <a href="List.aspx">首頁</a><br />
-        <div id="tabs">
-            <ul>
-                <li><a id="Qdesign" href="QuestionDesign.aspx" runat="server">問卷</a></li>
-                <li><a id="Qdetail" href="QuestionDetail.aspx" runat="server">問題</a></li>
-                <li><a id="Alist" href="AnswerList.aspx" runat="server">填寫資料</a></li>
-                <li><a id="Astastic" href="AnswerStastic.aspx" runat="server">統計</a></li>
-            </ul>
-            <div>
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
+        <a id="Qdesign" href="QuestionDesign.aspx" runat="server">問卷</a>|
+        <a id="Qdetail" href="QuestionDetail.aspx" runat="server">問題</a>|
+        <a id="Alist" href="AnswerList.aspx" runat="server">填寫資料</a>|
+        <a id="Astastic" href="AnswerStastic.aspx" runat="server">統計</a>
 
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
         </div>
+
+        
     </form>
 </body>
 </html>

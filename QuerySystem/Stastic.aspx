@@ -12,7 +12,7 @@
         <a href="List.aspx">回列表頁</a>
         <div>
             <h2><asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
-            <asp:Literal ID="ltlContent" runat="server"></asp:Literal><br />
+            <h4><asp:Literal ID="ltlContent" runat="server"></asp:Literal></h4>
             <asp:PlaceHolder ID="plcDynamic" runat="server">
 
             </asp:PlaceHolder>

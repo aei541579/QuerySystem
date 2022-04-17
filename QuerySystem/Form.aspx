@@ -13,8 +13,8 @@
     <form id="form1" runat="server">
         <div>
             <asp:HiddenField ID="hfID" runat="server" />
-            <asp:Literal ID="ltlTitle" runat="server"></asp:Literal><br />
-            <asp:Literal ID="ltlContent" runat="server"></asp:Literal><br />
+            <h2><asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
+            <h4><asp:Literal ID="ltlContent" runat="server"></asp:Literal></h4>
             <table>
                 <tr>
                     <td>姓名</td>
