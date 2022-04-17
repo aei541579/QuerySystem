@@ -45,6 +45,7 @@
         <asp:PlaceHolder ID="plcDynamic" runat="server">
 
         </asp:PlaceHolder>
+        <br />
         <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
         <%--<asp:Button ID="btnSubmit" runat="server" Text="送出" />--%>
         <input type="button" id="btnSubmit" value="送出" />
