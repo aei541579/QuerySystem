@@ -35,24 +35,30 @@ namespace QuerySystem.SystemAdmin
                         {
                             total += item.AnsCount;
                         }
-                        string selection = "<table>";
-                        string[] arrQue = question.Selection.Split(';');
-                        for (int i = 0; i < arrQue.Length; i++)
+
+                        Literal ltlSelection = new Literal();
+                        if (total == 0)
+                            ltlSelection.Text = "尚無資料<br/>";
+                        else
                         {
-                            int ansCount = 0;
-                            StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
-                            if (stastic != null)
-                                ansCount = stastic.AnsCount;
-                            selection +=
-                                $@"<tr>
+                            string selection = "<table>";
+                            string[] arrQue = question.Selection.Split(';');
+                            for (int i = 0; i < arrQue.Length; i++)
+                            {
+                                int ansCount = 0;
+                                StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
+                                if (stastic != null)
+                                    ansCount = stastic.AnsCount;
+                                selection +=
+                                    $@"<tr>
                                      <td>{arrQue[i]}</td>
                                      <td>{ansCount * 100 / total}%</td>
                                      <td>({ansCount})</td>
                                  </tr>";
+                            }
+                            selection += "</table>";
+                            ltlSelection.Text = selection;
                         }
-                        selection += "</table>";
-                        Literal ltlSelection = new Literal();
-                        ltlSelection.Text = selection;
                         this.plcDynamic.Controls.Add(ltlSelection);
                     }
                     else
