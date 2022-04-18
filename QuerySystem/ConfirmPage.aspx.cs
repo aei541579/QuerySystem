@@ -19,7 +19,7 @@ namespace QuerySystem
         {
             _answerList = HttpContext.Current.Session["answerModel"] as List<AnswerModel>;
             string IDstring = Request.QueryString["ID"];
-            if (Guid.TryParse(IDstring, out _questionnaireID))
+            if (Guid.TryParse(IDstring, out _questionnaireID) && _answerList != null)
             {
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
                 this.hfID.Value = _questionnaireID.ToString();
