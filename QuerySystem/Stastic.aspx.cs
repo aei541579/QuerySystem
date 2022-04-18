@@ -48,24 +48,33 @@ namespace QuerySystem
                             total += item.AnsCount;
                         }
 
-                        string[] arrQue = question.Selection.Split(';');
-                        for (int i = 0; i < arrQue.Length; i++)
+                        if (total == 0)
                         {
-                            int ansCount = 0;
-                            StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
-                            if (stastic != null)
-                                ansCount = stastic.AnsCount;
+                            Literal ltlNoAns = new Literal();
+                            ltlNoAns.Text = "尚無資料<br/>";
+                            this.plcDynamic.Controls.Add(ltlNoAns);
+                        }
+                        else
+                        {
+                            string[] arrQue = question.Selection.Split(';');
+                            for (int i = 0; i < arrQue.Length; i++)
+                            {
+                                int ansCount = 0;
+                                StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
+                                if (stastic != null)
+                                    ansCount = stastic.AnsCount;
 
-                            Literal ltlSelection = new Literal();
-                            ltlSelection.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount})";
-                            this.plcDynamic.Controls.Add(ltlSelection);
+                                Literal ltlSelection = new Literal();
+                                ltlSelection.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount})";
+                                this.plcDynamic.Controls.Add(ltlSelection);
 
-                            HtmlGenericControl outterDiv = new HtmlGenericControl("div");
-                            outterDiv.Style.Value = "width:50%;height:20px;border:1px solid black;";
-                            this.plcDynamic.Controls.Add(outterDiv);
-                            HtmlGenericControl innerDiv = new HtmlGenericControl("div");
-                            innerDiv.Style.Value = $"width:{ansCount * 100 / total}%;height:20px;background-color:gray;color:white;font-weight:bold;";
-                            outterDiv.Controls.Add(innerDiv);                            
+                                HtmlGenericControl outterDiv = new HtmlGenericControl("div");
+                                outterDiv.Style.Value = "width:50%;height:20px;border:1px solid black;";
+                                this.plcDynamic.Controls.Add(outterDiv);
+                                HtmlGenericControl innerDiv = new HtmlGenericControl("div");
+                                innerDiv.Style.Value = $"width:{ansCount * 100 / total}%;height:20px;background-color:gray;color:white;font-weight:bold;";
+                                outterDiv.Controls.Add(innerDiv);
+                            }
                         }
                     }
                     else
