@@ -68,7 +68,7 @@ namespace QuerySystem.SystemAdmin
             for (int i = 0; i < arrQue.Length; i++)
             {
                 ListItem item = new ListItem(arrQue[i], i.ToString());
-                if (Convert.ToInt32(rdb.Answer) == i)
+                if (rdb != null && Convert.ToInt32(rdb.Answer) == i)
                     item.Selected = true;
                 radioButtonList.Items.Add(item);
             }

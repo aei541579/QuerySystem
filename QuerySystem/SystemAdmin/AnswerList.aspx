@@ -2,6 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:Button ID="btnExport" runat="server" Text="匯出(.csv)" OnClick="btnExport_Click" />
     <table border="1">
         <tr>
             <th>#</th>
