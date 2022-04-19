@@ -1,5 +1,8 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SystemAdmin.master.cs" Inherits="QuerySystem.SystemAdmin.SystemAdmin" %>
 
+<%@ Register Src="~/SystemAdmin/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+
+
 <!DOCTYPE html>
 
 <html>
@@ -20,8 +23,7 @@
                 </div>
             <div class="row">
                 <div class="col-lg-2">
-                    <a href="List.aspx">問卷管理</a><br />
-                    <a href="ExampleList.aspx">常用問題管理</a><br />
+                    <uc1:ucLeftColumn runat="server" id="ucLeftColumn" />
                 </div>
                 <div class="col-lg-8"">
                     <ul class="nav nav-tabs">

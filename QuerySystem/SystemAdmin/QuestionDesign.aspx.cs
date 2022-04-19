@@ -27,7 +27,8 @@ namespace QuerySystem.SystemAdmin
             else if (Guid.TryParse(IDstring, out _questionnaireID))
             {
                 isCreateMode = false;
-                initEditMode(_questionnaireID);
+                if (!IsPostBack)
+                    initEditMode(_questionnaireID);
                 HttpContext.Current.Session["ID"] = _questionnaireID;
             }
             else
@@ -39,8 +40,8 @@ namespace QuerySystem.SystemAdmin
             QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(QuestionnaireID);
             this.txtTitle.Text = questionnaire.QueryName;
             this.txtContent.Text = questionnaire.QueryContent;
-            this.txtStartTime.Text = questionnaire.StartTime.ToString();
-            this.txtEndTime.Text = questionnaire.EndTime.ToString();            
+            this.txtStartTime.Text = questionnaire.StartTime.ToString("yyyy-MM-dd");
+            this.txtEndTime.Text = questionnaire.EndTime.ToString("yyyy-MM-dd");
         }
         private void initCreateMode()
         {
@@ -50,6 +51,7 @@ namespace QuerySystem.SystemAdmin
             linkQdesign.Visible = false;
             linkAlist.Visible = false;
             linkAstastic.Visible = false;
+            this.txtStartTime.Text = DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)

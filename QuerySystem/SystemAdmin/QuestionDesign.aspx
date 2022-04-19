@@ -18,12 +18,12 @@
         <tr>
             <td>開始時間</td>
             <td>
-                <asp:TextBox CssClass="form-control" ID="txtStartTime" runat="server" TextMode="DateTimeLocal"></asp:TextBox></td>
+                <asp:TextBox CssClass="form-control" ID="txtStartTime" runat="server" TextMode="Date"></asp:TextBox></td>
         </tr>
         <tr>
             <td>結束時間</td>
             <td>
-                <asp:TextBox CssClass="form-control" ID="txtEndTime" runat="server" TextMode="DateTimeLocal"></asp:TextBox></td>
+                <asp:TextBox CssClass="form-control" ID="txtEndTime" runat="server" TextMode="Date"></asp:TextBox></td>
         </tr>
         <tr>
             <td></td>

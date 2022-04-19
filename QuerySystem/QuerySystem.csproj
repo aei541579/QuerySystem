@@ -84,6 +84,7 @@
     <Content Include="SystemAdmin\List.aspx" />
     <Content Include="SystemAdmin\QuestionDetail.aspx" />
     <Content Include="SystemAdmin\QuestionDesign.aspx" />
+    <Content Include="SystemAdmin\ucLeftColumn.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +193,13 @@
     </Compile>
     <Compile Include="SystemAdmin\SystemAdmin.Master.designer.cs">
       <DependentUpon>SystemAdmin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SystemAdmin\ucLeftColumn.ascx.cs">
+      <DependentUpon>ucLeftColumn.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemAdmin\ucLeftColumn.ascx.designer.cs">
+      <DependentUpon>ucLeftColumn.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

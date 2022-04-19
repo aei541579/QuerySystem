@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ExampleList.aspx.cs" Inherits="QuerySystem.SystemAdmin.ExampleList" %>
 
+<%@ Register Src="~/SystemAdmin/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -18,27 +21,21 @@
                 </div>
             <div class="row">
                 <div class="col-lg-2">
-                    <a href="List.aspx">問卷管理</a><br />
-                    <a href="ExampleList.aspx">常用問題管理</a><br />
+                    <uc1:ucLeftColumn runat="server" id="ucLeftColumn" />
                 </div>
                 <div class="col-lg-8">
-                    <table>
+                    <table class="table table-borderless" style="width:50%;">
                         <tr>
                             <td>問卷標題</td>
                             <td>
                                 <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
-                            </td>
-                            <td>
                                 <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
-
-                            </td>
+                            </td>                            
                         </tr>
                         <tr>
                             <td>建立新範本</td>
                             <td>
                                 <asp:TextBox ID="txtCreate" runat="server"></asp:TextBox>
-                            </td>
-                            <td>
                                 <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
                             </td>
                         </tr>

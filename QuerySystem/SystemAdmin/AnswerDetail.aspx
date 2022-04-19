@@ -37,5 +37,9 @@
 
         </asp:PlaceHolder>
 
-    
+    <script>
+        $(document).ready(function () {
+            $("#Alist").addClass("active");
+        })
+    </script>
 </asp:Content>
