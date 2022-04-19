@@ -1,6 +1,8 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SystemAdmin.master.cs" Inherits="QuerySystem.SystemAdmin.SystemAdmin" %>
 
 <%@ Register Src="~/SystemAdmin/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+<%@ Register Src="~/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+
 
 
 <!DOCTYPE html>
@@ -11,9 +13,7 @@
     <title></title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-    <link href="/CSS/bootstrap.min.css" rel="stylesheet" />
-    <script src="/JS/jquery.min.js"></script>
-    <script src="/JS/bootstrap.min.js"></script>
+    <uc1:ucJSScript runat="server" ID="ucJSScript" />
 </head>
 <body>
     <form id="form1" runat="server">

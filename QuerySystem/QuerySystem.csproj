@@ -85,6 +85,7 @@
     <Content Include="SystemAdmin\QuestionDetail.aspx" />
     <Content Include="SystemAdmin\QuestionDesign.aspx" />
     <Content Include="SystemAdmin\ucLeftColumn.ascx" />
+    <Content Include="ucJSScript.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +201,13 @@
     </Compile>
     <Compile Include="SystemAdmin\ucLeftColumn.ascx.designer.cs">
       <DependentUpon>ucLeftColumn.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ucJSScript.ascx.cs">
+      <DependentUpon>ucJSScript.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ucJSScript.ascx.designer.cs">
+      <DependentUpon>ucJSScript.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

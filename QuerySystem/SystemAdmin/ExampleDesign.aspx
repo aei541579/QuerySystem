@@ -1,6 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ExampleDesign.aspx.cs" Inherits="QuerySystem.SystemAdmin.ExampleDesign" %>
 
 <%@ Register Src="~/SystemAdmin/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+<%@ Register Src="~/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+
 
 
 <!DOCTYPE html>
@@ -9,9 +11,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link href="/CSS/bootstrap.min.css" rel="stylesheet" />
-    <script src="/JS/jquery.min.js"></script>
-    <script src="/JS/bootstrap.min.js"></script>
+    <uc1:ucJSScript runat="server" id="ucJSScript" />
 </head>
 <body>
     <form id="form1" runat="server">
