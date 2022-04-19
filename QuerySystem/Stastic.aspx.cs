@@ -69,7 +69,7 @@ namespace QuerySystem
                                 this.plcDynamic.Controls.Add(ltlSelection);
 
                                 HtmlGenericControl outterDiv = new HtmlGenericControl("div");
-                                outterDiv.Style.Value = "width:50%;height:20px;border:1px solid black;";
+                                outterDiv.Style.Value = "width:100%;height:20px;border:1px solid black;";
                                 this.plcDynamic.Controls.Add(outterDiv);
                                 HtmlGenericControl innerDiv = new HtmlGenericControl("div");
                                 innerDiv.Style.Value = $"width:{ansCount * 100 / total}%;height:20px;background-color:gray;color:white;font-weight:bold;";
