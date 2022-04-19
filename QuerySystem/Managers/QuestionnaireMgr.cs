@@ -49,6 +49,7 @@ namespace QuerySystem.Managers
             string commandText =
                 $@"  SELECT *
                      FROM [Questionnaires]
+                     WHERE IsExample = 0
                      ORDER BY CreateTime DESC ";
             try
             {
@@ -83,7 +84,7 @@ namespace QuerySystem.Managers
             string commandText =
                 $@"  SELECT *
                      FROM [Questionnaires]
-                     WHERE QueryName Like '%'+@keyword+'%'
+                     WHERE QueryName Like '%'+@keyword+'%' AND IsExample = 0
                      ORDER BY CreateTime DESC ";
             try
             {
@@ -150,10 +151,10 @@ namespace QuerySystem.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 $@"  UPDATE [Questionnaires]
-                     SET QueryName = QueryName,
-                         QueryContent = QueryContent,
-                         StartTime = StartTime,
-                         EndTime = EndTime
+                     SET QueryName = @QueryName,
+                         QueryContent = @QueryContent,
+                         StartTime = @StartTime,
+                         EndTime = @EndTime
                      WHERE ID = @ID ";
             try
             {
@@ -191,6 +192,7 @@ namespace QuerySystem.Managers
                     using (SqlCommand command = new SqlCommand(commandText, conn))
                     {
                         DeleteQuestion(questionnaireID);
+                        DeleteAnswer(questionnaireID);
 
                         conn.Open();
                         command.Parameters.AddWithValue("@ID", questionnaireID);
@@ -227,6 +229,32 @@ namespace QuerySystem.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnairMgr.DeleteQuestion", ex);
+                throw;
+            }
+        }
+        public void DeleteAnswer(Guid questionnaireID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  DELETE FROM [Answers]                     
+                     WHERE QuestionnaireID = @QuestionnaireID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QuestionnaireID", questionnaireID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.DeleteAnswer", ex);
                 throw;
             }
         }
@@ -565,7 +593,176 @@ namespace QuerySystem.Managers
 
         }
 
+        public void CreateExample(Guid questionnaireID, string queryName)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  INSERT INTO [Questionnaires]
+                        (ID, QueryName, IsExample)
+                     VALUES 
+                        (@ID, @QueryName, @IsExample) ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
 
+                        conn.Open();
+                        command.Parameters.AddWithValue("@ID", questionnaireID);
+                        command.Parameters.AddWithValue("@QueryName", queryName);
+                        command.Parameters.AddWithValue("@IsExample", 1);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.CreateExample", ex);
+                throw;
+            }
+        }
+        public void UpdateExample(Guid questionnaireID, string queryName)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  UPDATE [Questionnaires]
+                     SET QueryName = @QueryName
+                     WHERE ID = @ID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+
+                        conn.Open();
+                        command.Parameters.AddWithValue("@ID", questionnaireID);
+                        command.Parameters.AddWithValue("@QueryName", queryName);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.UpdateExample", ex);
+                throw;
+            }
+        }
+
+        public QuestionnaireModel GetExample(Guid QuestionnaireID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [Questionnaires]
+                     WHERE ID = @ID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@ID", QuestionnaireID);
+
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        QuestionnaireModel questionnaire = new QuestionnaireModel();
+                        if (reader.Read())
+                        {
+                            questionnaire.QuestionnaireID = (Guid)reader["ID"];
+                            questionnaire.QueryName = reader["QueryName"] as string;
+                            questionnaire.CreateTime = (DateTime)reader["CreateTime"];
+                        }
+                        return questionnaire;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.GetExample", ex);
+                throw;
+            }
+        }
+        public List<QuestionnaireModel> GetExampleList()
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [Questionnaires]
+                     WHERE IsExample = 1
+                     ORDER BY CreateTime DESC ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<QuestionnaireModel> questionnaireList = new List<QuestionnaireModel>();
+                        while (reader.Read())
+                        {
+                            QuestionnaireModel questionnaire = new QuestionnaireModel()
+                            {
+                                QuestionnaireID = (Guid)reader["ID"],
+                                QueryName = reader["QueryName"] as string,
+                                CreateTime = (DateTime)reader["CreateTime"]
+                            };
+                            questionnaireList.Add(questionnaire);
+                        }
+                        return questionnaireList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.GetExampleList", ex);
+                throw;
+            }
+        }
+        public List<QuestionnaireModel> GetExampleList(string keyword)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  SELECT *
+                     FROM [Questionnaires]
+                     WHERE QueryName Like '%'+@keyword+'%' AND IsExample = 1
+                     ORDER BY CreateTime DESC ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+                        command.Parameters.AddWithValue("@keyword", keyword);
+                        conn.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        List<QuestionnaireModel> questionnaireList = new List<QuestionnaireModel>();
+                        while (reader.Read())
+                        {
+                            QuestionnaireModel questionnaire = new QuestionnaireModel()
+                            {
+                                QuestionnaireID = (Guid)reader["ID"],
+                                QueryName = reader["QueryName"] as string,
+                                CreateTime = (DateTime)reader["CreateTime"]
+                            };
+                            questionnaireList.Add(questionnaire);
+                        }
+                        return questionnaireList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.GetExampleList", ex);
+                throw;
+            }
+        }
 
     }
 }

@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="col-lg-2">
                     <a href="List.aspx">問卷管理</a><br />
-                    <a href="List.aspx">常用問題管理</a><br />
+                    <a href="ExampleList.aspx">常用問題管理</a><br />
                 </div>
-                <div class="col-lg-7"">
+                <div class="col-lg-8"">
                     <ul class="nav nav-tabs">
                 <li class="nav-item"><a class="nav-link" id="Qdesign" href="#" runat="server">問卷</a></li>
                 <li class="nav-item"><a class="nav-link" id="Qdetail" href="#" runat="server">問題</a></li>

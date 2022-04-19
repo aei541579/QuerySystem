@@ -79,6 +79,8 @@
     <Content Include="SystemAdmin\AnswerDetail.aspx" />
     <Content Include="SystemAdmin\AnswerList.aspx" />
     <Content Include="SystemAdmin\AnswerStastic.aspx" />
+    <Content Include="SystemAdmin\ExampleDesign.aspx" />
+    <Content Include="SystemAdmin\ExampleList.aspx" />
     <Content Include="SystemAdmin\List.aspx" />
     <Content Include="SystemAdmin\QuestionDetail.aspx" />
     <Content Include="SystemAdmin\QuestionDesign.aspx" />
@@ -148,6 +150,20 @@
     </Compile>
     <Compile Include="SystemAdmin\AnswerStastic.aspx.designer.cs">
       <DependentUpon>AnswerStastic.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemAdmin\ExampleDesign.aspx.cs">
+      <DependentUpon>ExampleDesign.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemAdmin\ExampleDesign.aspx.designer.cs">
+      <DependentUpon>ExampleDesign.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemAdmin\ExampleList.aspx.cs">
+      <DependentUpon>ExampleList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemAdmin\ExampleList.aspx.designer.cs">
+      <DependentUpon>ExampleList.aspx</DependentUpon>
     </Compile>
     <Compile Include="SystemAdmin\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>

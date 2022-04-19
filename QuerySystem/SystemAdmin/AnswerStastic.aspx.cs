@@ -17,6 +17,7 @@ namespace QuerySystem.SystemAdmin
             string IDstring = Request.QueryString["ID"];
             if (Guid.TryParse(IDstring, out Guid questionnaireID))
             {
+                HttpContext.Current.Session["ID"] = questionnaireID;
                 List<QuestionModel> questionList = _mgr.GetQuestionList(questionnaireID);
                 List<StasticModel> stasticList = _mgr.GetStasticList(questionnaireID);
                 foreach (QuestionModel question in questionList)
