@@ -120,9 +120,9 @@ namespace QuerySystem.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 $@"  INSERT INTO [Questionnaires]
-                        (ID, QueryName, QueryContent, StartTime, EndTime)
+                        (ID, QueryName, QueryContent, StartTime, EndTime, IsExample)
                      VALUES 
-                        (@ID, @QueryName, @QueryContent, @StartTime, @EndTime) ";
+                        (@ID, @QueryName, @QueryContent, @StartTime, @EndTime, @IsExample) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -136,6 +136,7 @@ namespace QuerySystem.Managers
                         command.Parameters.AddWithValue("@QueryContent", questionnaire.QueryContent);
                         command.Parameters.AddWithValue("@StartTime", questionnaire.StartTime);
                         command.Parameters.AddWithValue("@EndTime", questionnaire.EndTime);
+                        command.Parameters.AddWithValue("@IsExample", 0);
                         command.ExecuteNonQuery();
                     }
                 }
