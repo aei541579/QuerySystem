@@ -114,7 +114,7 @@ namespace QuerySystem
                 _mgr.CreateAnswer(answer);
             }
             HttpContext.Current.Session.RemoveAll();
-            Response.Redirect("List.aspx");
+            Response.Redirect("Stastic.aspx?ID=" + _questionnaireID);
         }
     }
 }
