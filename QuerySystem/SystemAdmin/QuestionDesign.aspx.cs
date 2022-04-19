@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using QuerySystem.Models;
 using QuerySystem.Managers;
+using System.Web.UI.HtmlControls;
 
 namespace QuerySystem.SystemAdmin
 {
@@ -20,6 +21,7 @@ namespace QuerySystem.SystemAdmin
             if (string.IsNullOrWhiteSpace(IDstring))
             {
                 isCreateMode = true;
+                initCreateMode();
                 HttpContext.Current.Session.Remove("ID");
             }
             else if (Guid.TryParse(IDstring, out _questionnaireID))
@@ -38,8 +40,18 @@ namespace QuerySystem.SystemAdmin
             this.txtTitle.Text = questionnaire.QueryName;
             this.txtContent.Text = questionnaire.QueryContent;
             this.txtStartTime.Text = questionnaire.StartTime.ToString();
-            this.txtEndTime.Text = questionnaire.EndTime.ToString();
+            this.txtEndTime.Text = questionnaire.EndTime.ToString();            
         }
+        private void initCreateMode()
+        {
+            HtmlAnchor linkQdesign = Master.FindControl("Qdetail") as HtmlAnchor;
+            HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
+            HtmlAnchor linkAstastic = Master.FindControl("Astastic") as HtmlAnchor;
+            linkQdesign.Visible = false;
+            linkAlist.Visible = false;
+            linkAstastic.Visible = false;
+        }
+
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             QuestionnaireModel questionnaire = new QuestionnaireModel()

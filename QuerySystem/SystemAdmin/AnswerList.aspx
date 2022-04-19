@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:Button ID="btnExport" runat="server" Text="匯出(.csv)" OnClick="btnExport_Click" />
-    <table border="1">
+    <table class="table table-striped">
         <tr>
             <th>#</th>
             <th>姓名</th>
@@ -29,4 +29,11 @@
             </ItemTemplate>
         </asp:Repeater>
         </table>
+
+    <script>
+        $(document).ready(function () {
+            $("#Alist").addClass("active");
+        })
+    </script>
+
 </asp:Content>

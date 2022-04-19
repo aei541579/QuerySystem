@@ -8,24 +8,35 @@
     <title></title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
-    <script src="JS/jquery.min.js"></script>
-    <script src="JS/bootstrap.min.js"></script>
+    <link href="/CSS/bootstrap.min.css" rel="stylesheet" />
+    <script src="/JS/jquery.min.js"></script>
+    <script src="/JS/bootstrap.min.js"></script>
 </head>
 <body>
     <form id="form1" runat="server">
-        <a href="List.aspx">首頁</a><br />
-        <a id="Qdesign" href="QuestionDesign.aspx" runat="server">問卷</a>|
-        <a id="Qdetail" href="QuestionDetail.aspx" runat="server">問題</a>|
-        <a id="Alist" href="AnswerList.aspx" runat="server">填寫資料</a>|
-        <a id="Astastic" href="AnswerStastic.aspx" runat="server">統計</a>
-
-        <div>
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-            </asp:ContentPlaceHolder>
+        <div class="container">
+            <div class="row">
+                <h2>後台-問題管理</h2>
+                </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <a href="List.aspx">問卷管理</a><br />
+                    <a href="List.aspx">常用問題管理</a><br />
+                </div>
+                <div class="col-lg-7"">
+                    <ul class="nav nav-tabs">
+                <li class="nav-item"><a class="nav-link" id="Qdesign" href="#" runat="server">問卷</a></li>
+                <li class="nav-item"><a class="nav-link" id="Qdetail" href="#" runat="server">問題</a></li>
+                <li class="nav-item"><a class="nav-link" id="Alist" href="#" runat="server">填寫資料</a></li>
+                <li class="nav-item"><a class="nav-link" id="Astastic" href="#" runat="server">統計</a></li>
+            </ul>
+                    <div>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        
     </form>
 </body>
 </html>

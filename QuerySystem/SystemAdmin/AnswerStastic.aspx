@@ -6,4 +6,10 @@
     <asp:PlaceHolder ID="plcDynamic" runat="server">
 
     </asp:PlaceHolder>
+    <script>
+        $(document).ready(function () {
+            $("#Astastic").addClass("active");
+        })
+    </script>
+
 </asp:Content>

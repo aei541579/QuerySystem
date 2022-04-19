@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <table>
+    <table class="table table-borderless">
         <tr>
             <td>種類</td>
             <td>
@@ -32,7 +32,7 @@
             </td>
         </tr>
     </table>
-    <table border="1">
+    <table class="table table-striped">
         <tr>
             <th></th>
             <th>#</th>
@@ -49,7 +49,7 @@
                         <asp:CheckBox ID="ckbDel" runat="server" />
                     </td>
                     <td>
-                        <asp:Label ID="lblNumber" runat="server" ></asp:Label>
+                        <asp:Label ID="lblNumber" runat="server"></asp:Label>
                     </td>
                     <td>
                         <asp:Label ID="lblQuestion" runat="server" Text='<%#Eval("QuestionVal") %>'></asp:Label>
@@ -70,4 +70,11 @@
     <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
     <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
     <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
+
+    <script>
+        $(document).ready(function () {
+            $("#Qdetail").addClass("active");
+        })
+    </script>
+
 </asp:Content>
