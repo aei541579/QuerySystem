@@ -83,19 +83,22 @@
         $(document).ready(function () {
             $("#Qdetail").addClass("active");
 
+            var txt = $("input[id*=txtSelection]");
             var parentDdl = $("select[id*=ddlQuestionType]")
             var txtDdl = parentDdl.find("option[value=2]");
             txtDdl.click(function () {
-                var txt = $("input[id*=txtSelection]");
-                txt.disabled = 'disable';
-                console.log(txt);
+                txt.attr("disabled", "disable");
+            })
+            var rdbDdl = parentDdl.find("option[value=0]");
+            rdbDdl.click(function () {
+                txt.removeAttr("disabled", "disable");
+            })
+            var ckbDdl = parentDdl.find("option[value=1]");
+            ckbDdl.click(function () {
+                txt.removeAttr("disabled", "disable");
             })
         })
-        //function txtDisable() {
-        //    var txt = $("input[id*=txtSelection]");
-        //    txt.disabled = 'disable';
-        //    console.log(txt);
-        //}
+        
     </script>
 
 </asp:Content>
