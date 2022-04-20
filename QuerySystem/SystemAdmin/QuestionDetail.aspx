@@ -3,9 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Label ID="ltlAlert" runat="server" ForeColor="Red" Visible="false">
-        **已經有人作答了，問題不能再修改了喔**
-    </asp:Label>
+    <asp:Label ID="ltlAlert" runat="server" ForeColor="Red" Visible="false"></asp:Label>
     <table class="table table-borderless">
         <tr>
             <td>種類</td>
@@ -36,7 +34,7 @@
                 <asp:TextBox ID="txtSelection" runat="server" class="form-control"></asp:TextBox>
             </td>
             <td>
-(多個答案以;分隔)
+                (多個答案以;分隔)
                 <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
                 <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
             </td>

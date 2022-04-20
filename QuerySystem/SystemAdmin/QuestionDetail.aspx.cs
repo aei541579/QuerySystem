@@ -80,7 +80,9 @@ namespace QuerySystem.SystemAdmin
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
             QuestionModel question = new QuestionModel();
-            FillSelectionContent(question);
+            FillSelectionContent(question, out bool noInput);
+            if (noInput)
+                return;
             question.QuestionID = Guid.NewGuid();
 
             _questionSession.Add(question);
@@ -89,13 +91,32 @@ namespace QuerySystem.SystemAdmin
             InitTextbox();
         }
 
-        private void FillSelectionContent(QuestionModel question)
-        {            
+        private void FillSelectionContent(QuestionModel question, out bool noInput)
+        {
+            noInput = false;
             question.QuestionnaireID = _questionnaireID;
-            question.QuestionVal = this.txtQuestion.Text.Trim();
-            question.Selection = this.txtSelection.Text.Trim();
             question.Type = (QuestionType)Convert.ToInt32(this.ddlQuestionType.SelectedValue);
+            if (NoInput(this.txtQuestion.Text.Trim()))
+                noInput = true;
+            question.QuestionVal = this.txtQuestion.Text.Trim();
+            if (question.Type != QuestionType.文字 && NoInput(this.txtSelection.Text.Trim()))
+                noInput = true;
+            question.Selection = this.txtSelection.Text.Trim();
             question.Necessary = this.ckbNecessary.Checked;
+        }
+        private bool NoInput(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**問題尚未輸入完畢**";
+                return true;
+            }
+            else
+            {
+                this.ltlAlert.Visible = false;
+                return false;
+            }
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -178,8 +199,10 @@ namespace QuerySystem.SystemAdmin
             {
                 int index = _questionSession.FindIndex(x => x.QuestionID == editQID);
                 QuestionModel question = _questionSession.Find(x => x.QuestionID == editQID);
+                FillSelectionContent(question, out bool noInput);
+                if (noInput)
+                    return;
                 _questionSession.RemoveAt(index);
-                FillSelectionContent(question);
                 _questionSession.Insert(index, question);
                 InitRpt(_questionSession);
                 InitTextbox();
@@ -189,6 +212,7 @@ namespace QuerySystem.SystemAdmin
         private void InitDisabledInput()
         {
             this.ltlAlert.Visible = true;
+            this.ltlAlert.Text = "**已經有人作答了，問題不能再修改了喔 **";
             this.ddlTemplate.Enabled = false;
             this.txtQuestion.Enabled = false;
             this.ddlQuestionType.Enabled = false;
