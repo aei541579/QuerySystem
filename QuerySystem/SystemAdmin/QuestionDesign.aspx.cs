@@ -56,19 +56,9 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+            if (InputError(out string errorMsg))
             {
-                this.ltlAlert.Text = "**必須輸入問卷標題**";
-                return;
-            }
-            else if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
-            {
-                this.ltlAlert.Text = "**必須輸入起始時間**";
-                return;
-            }
-            else if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
-            {
-                this.ltlAlert.Text = "**必須輸入結束時間**";
+                this.ltlAlert.Text = errorMsg;
                 return;
             }
 
@@ -93,6 +83,24 @@ namespace QuerySystem.SystemAdmin
             }
             HttpContext.Current.Session["ID"] = questionnaire.QuestionnaireID;
             Response.Redirect("QuestionDetail.aspx?ID=" + questionnaire.QuestionnaireID);
+        }
+        private bool InputError(out string errorMsg)
+        {
+            errorMsg = string.Empty;
+            if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+                errorMsg += "**必須輸入問卷標題**<br/>";
+            if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
+                errorMsg += "**必須輸入起始日期**<br/>";
+            if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
+                errorMsg += "**必須輸入結束日期**<br/>";
+            else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today)
+                errorMsg += "**起始日期不可早於今天**<br/>";
+            else if (Convert.ToDateTime(this.txtStartTime.Text) > Convert.ToDateTime(this.txtEndTime.Text))
+                errorMsg += "**起始日期不可晚於結束日期**<br/>";
+
+            if (string.IsNullOrEmpty(errorMsg))
+                return false;
+            return true;
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
