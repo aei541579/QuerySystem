@@ -109,6 +109,7 @@
             var parentDdl = $("select[id*=ddlQuestionType]")
             var txtDdl = parentDdl.find("option[value=2]");
             txtDdl.click(function () {
+                txt.val('');
                 txt.attr("disabled", "disable");
             })
             var rdbDdl = parentDdl.find("option[value=0]");

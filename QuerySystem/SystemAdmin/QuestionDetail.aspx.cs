@@ -80,8 +80,8 @@ namespace QuerySystem.SystemAdmin
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
             QuestionModel question = new QuestionModel();
-            FillSelectionContent(question, out bool noInput);
-            if (noInput)
+            FillSelectionContent(question, out bool errorInput);
+            if (errorInput)
                 return;
             question.QuestionID = Guid.NewGuid();
 
@@ -91,16 +91,16 @@ namespace QuerySystem.SystemAdmin
             InitTextbox();
         }
 
-        private void FillSelectionContent(QuestionModel question, out bool noInput)
+        private void FillSelectionContent(QuestionModel question, out bool errorInput)
         {
-            noInput = false;
+            errorInput = false;
             question.QuestionnaireID = _questionnaireID;
             question.Type = (QuestionType)Convert.ToInt32(this.ddlQuestionType.SelectedValue);
             if (NoInput(this.txtQuestion.Text.Trim()))
-                noInput = true;
+                errorInput = true;
             question.QuestionVal = this.txtQuestion.Text.Trim();
-            if (question.Type != QuestionType.文字 && NoInput(this.txtSelection.Text.Trim()))
-                noInput = true;
+            if (question.Type != QuestionType.文字 && ErrorInput(this.txtSelection.Text.Trim()))
+                errorInput = true;
             question.Selection = this.txtSelection.Text.Trim();
             question.Necessary = this.ckbNecessary.Checked;
         }
@@ -116,6 +116,45 @@ namespace QuerySystem.SystemAdmin
             {
                 this.ltlAlert.Visible = false;
                 return false;
+            }
+        }
+        private bool ErrorInput(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**選項尚未輸入完畢**";
+                return true;
+            }
+            try
+            {
+                string[] arrSelection = input.Split(';');
+                if (arrSelection.Length <= 1)
+                {
+                    this.ltlAlert.Visible = true;
+                    this.ltlAlert.Text = "**請輸入至少兩個選項**";
+                    return true;
+                }
+                else
+                {
+                    foreach (var item in arrSelection)
+                    {
+                        if (string.IsNullOrWhiteSpace(item))
+                        {
+                            this.ltlAlert.Visible = true;
+                            this.ltlAlert.Text = "**請正確輸入選項**";
+                            return true;
+                        }
+                    }
+                    this.ltlAlert.Visible = false;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**選項輸入有誤**";
+                return true;
             }
         }
 
@@ -174,6 +213,10 @@ namespace QuerySystem.SystemAdmin
                     this.ddlQuestionType.SelectedIndex = (int)question.Type;
                     this.ckbNecessary.Checked = question.Necessary;
                     this.txtSelection.Text = question.Selection;
+                    if (question.Type == QuestionType.文字)
+                        this.txtSelection.Attributes.Add("disabled", "disable");
+                    else
+                        this.txtSelection.Attributes.Remove("disabled");
                     this.btnAddQuestion.Visible = false;
                     this.btnEditQuestion.Visible = true;
                 }
