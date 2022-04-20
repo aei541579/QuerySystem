@@ -7,9 +7,9 @@
         <tr>
             <td>種類</td>
             <td>
-                <asp:DropDownList ID="ddlTemplate" runat="server">
-                    <asp:ListItem>自訂問題</asp:ListItem>
-                    <asp:ListItem>常用問題</asp:ListItem>
+                <asp:DropDownList ID="ddlTemplate" runat="server" OnSelectedIndexChanged="ddlTemplate_SelectedIndexChanged" AutoPostBack="true">
+                    <asp:ListItem runat="server" Value="0">自訂問題</asp:ListItem>
+                    
                 </asp:DropDownList></td>
         </tr>
         <tr>
@@ -19,7 +19,7 @@
                 <asp:DropDownList ID="ddlQuestionType" runat="server">
                     <asp:ListItem Value="0">單選方塊</asp:ListItem>
                     <asp:ListItem Value="1">複選方塊</asp:ListItem>
-                    <asp:ListItem Value="2">文字</asp:ListItem>
+                    <asp:ListItem Value="2" OnClientClick="return txtDisable()">文字</asp:ListItem>
                 </asp:DropDownList>
                 <asp:CheckBox ID="ckbNecessary" runat="server" Text="必填" />
             </td>
@@ -74,7 +74,20 @@
     <script>
         $(document).ready(function () {
             $("#Qdetail").addClass("active");
+
+            var parentDdl = $("select[id*=ddlQuestionType]")
+            var txtDdl = parentDdl.find("option[value=2]");
+            txtDdl.click(function () {
+                var txt = $("input[id*=txtSelection]");
+                txt.disabled = 'disable';
+                console.log(txt);
+            })            
         })
+        //function txtDisable() {
+        //    var txt = $("input[id*=txtSelection]");
+        //    txt.disabled = 'disable';
+        //    console.log(txt);
+        //}
     </script>
 
 </asp:Content>

@@ -26,12 +26,24 @@ namespace QuerySystem.SystemAdmin
                 {
                     List<QuestionModel> questionList = _mgr.GetQuestionList(_questionnaireID);
                     InitRpt(questionList);
+                    InitDdl();
                     HttpContext.Current.Session["qusetionModel"] = questionList;
                 }
                 else
                     Response.Redirect("List.aspx");
             }
 
+        }
+        private void InitDdl()
+        {
+            List<QuestionnaireModel> exampleList = _mgr.GetExampleList();
+            foreach (QuestionnaireModel example in exampleList)
+            {
+                ListItem ddlItem = new ListItem();
+                ddlItem.Text = example.QueryName;
+                ddlItem.Value = example.QuestionnaireID.ToString();
+                this.ddlTemplate.Items.Add(ddlItem);
+            }
         }
         private void InitRpt(List<QuestionModel> questionList)
         {
@@ -104,6 +116,8 @@ namespace QuerySystem.SystemAdmin
             int questionNo = 1;
             foreach (QuestionModel question in _questionSession)
             {
+                question.QuestionID = Guid.NewGuid();
+                question.QuestionnaireID = _questionnaireID;
                 question.QuestionNo = questionNo;                
                     _mgr.CreateQuestion(question);
 
@@ -124,6 +138,21 @@ namespace QuerySystem.SystemAdmin
                     this.ckbNecessary.Checked = question.Necessary;
                     this.txtSelection.Text = question.Selection;
                 }
+            }
+        }
+
+        protected void ddlTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(Guid.TryParse(this.ddlTemplate.SelectedValue, out Guid exampleID))
+            {
+                List<QuestionModel> question = _mgr.GetQuestionList(exampleID);
+                HttpContext.Current.Session["qusetionModel"] = question;
+                InitRpt(question);
+               //Response.Redirect(Request.Url.ToString());
+            }
+            else
+            {
+                InitRpt(new List<QuestionModel>());
             }
         }
     }
