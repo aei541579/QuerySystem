@@ -14,6 +14,7 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.RemoveAll();
             if (!IsPostBack)
             {
                 List<QuestionnaireModel> questionnaireList = _mgr.GetQuestionnaireList();
