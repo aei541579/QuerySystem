@@ -3,19 +3,25 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:Label ID="ltlAlert" runat="server" ForeColor="Red" Visible="false">
+        **已經有人作答了，問題不能再修改了喔**
+    </asp:Label>
     <table class="table table-borderless">
         <tr>
             <td>種類</td>
-            <td>
+            <td colspan="2">
                 <asp:DropDownList ID="ddlTemplate" runat="server" OnSelectedIndexChanged="ddlTemplate_SelectedIndexChanged" AutoPostBack="true">
                     <asp:ListItem runat="server" Value="0">自訂問題</asp:ListItem>
-                    
+
                 </asp:DropDownList></td>
         </tr>
         <tr>
             <td>問題</td>
+            <td width="50%">
+                <asp:HiddenField ID="hfEditQID" runat="server" />
+                <asp:TextBox ID="txtQuestion" runat="server" class="form-control"></asp:TextBox>
+            </td>
             <td>
-                <asp:TextBox ID="txtQuestion" runat="server"></asp:TextBox>
                 <asp:DropDownList ID="ddlQuestionType" runat="server">
                     <asp:ListItem Value="0">單選方塊</asp:ListItem>
                     <asp:ListItem Value="1">複選方塊</asp:ListItem>
@@ -27,8 +33,19 @@
         <tr>
             <td>回答</td>
             <td>
-                <asp:TextBox ID="txtSelection" runat="server"></asp:TextBox>(多個答案以;分隔)
+                <asp:TextBox ID="txtSelection" runat="server" class="form-control"></asp:TextBox>
+            </td>
+            <td>
+(多個答案以;分隔)
                 <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
+                <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+            </td>
+            <td>
             </td>
         </tr>
     </table>
@@ -81,7 +98,7 @@
                 var txt = $("input[id*=txtSelection]");
                 txt.disabled = 'disable';
                 console.log(txt);
-            })            
+            })
         })
         //function txtDisable() {
         //    var txt = $("input[id*=txtSelection]");

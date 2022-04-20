@@ -350,6 +350,7 @@ namespace QuerySystem.Managers
         {
             return new QuestionModel()
             {
+                QuestionID = (Guid)reader["ID"],
                 QuestionnaireID = (Guid)reader["QuestionnaireID"],
                 Type = (QuestionType)reader["Type"],
                 QuestionNo = (int)reader["QuestionNo"],

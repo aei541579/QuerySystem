@@ -28,6 +28,9 @@ namespace QuerySystem.SystemAdmin
                     InitRpt(questionList);
                     InitDdl();
                     HttpContext.Current.Session["qusetionModel"] = questionList;
+
+                    if (_mgr.GetPersonList(_questionnaireID).Count > 0)
+                        InitDisabledInput();
                 }
                 else
                     Response.Redirect("List.aspx");
@@ -69,23 +72,30 @@ namespace QuerySystem.SystemAdmin
             this.ddlQuestionType.SelectedIndex = 0;
             this.ckbNecessary.Checked = false;
             this.txtSelection.Text = "";
+            this.btnAddQuestion.Visible = true;
+            this.btnEditQuestion.Visible = false;
         }
 
 
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
-            //_questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
             QuestionModel question = new QuestionModel();
+            FillSelectionContent(question);
             question.QuestionID = Guid.NewGuid();
+
+            _questionSession.Add(question);
+            HttpContext.Current.Session["qusetionModel"] = _questionSession;
+            InitRpt(_questionSession);
+            InitTextbox();
+        }
+
+        private void FillSelectionContent(QuestionModel question)
+        {            
             question.QuestionnaireID = _questionnaireID;
             question.QuestionVal = this.txtQuestion.Text.Trim();
             question.Selection = this.txtSelection.Text.Trim();
             question.Type = (QuestionType)Convert.ToInt32(this.ddlQuestionType.SelectedValue);
             question.Necessary = this.ckbNecessary.Checked;
-            _questionSession.Add(question);
-            HttpContext.Current.Session["qusetionModel"] = _questionSession;
-            InitRpt(_questionSession);
-            InitTextbox();
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -107,22 +117,26 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.Remove("qusetionModel");
             Response.Redirect("List.aspx");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            //_questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
+            if (_mgr.GetQuestionList(_questionnaireID) != null)
+                _mgr.DeleteQuestion(_questionnaireID);
+
             int questionNo = 1;
             foreach (QuestionModel question in _questionSession)
             {
                 question.QuestionID = Guid.NewGuid();
                 question.QuestionnaireID = _questionnaireID;
-                question.QuestionNo = questionNo;                
-                    _mgr.CreateQuestion(question);
+                question.QuestionNo = questionNo;
+                _mgr.CreateQuestion(question);
 
                 questionNo++;
             }
+            HttpContext.Current.Session.Remove("qusetionModel");
             Response.Redirect("List.aspx");
         }
 
@@ -133,27 +147,56 @@ namespace QuerySystem.SystemAdmin
                 if (e.CommandName == "lkbEdit" && Guid.TryParse(e.CommandArgument.ToString(), out Guid questionID))
                 {
                     QuestionModel question = _questionSession.Find(x => x.QuestionID == questionID);
+                    this.hfEditQID.Value = question.QuestionID.ToString();
                     this.txtQuestion.Text = question.QuestionVal;
                     this.ddlQuestionType.SelectedIndex = (int)question.Type;
                     this.ckbNecessary.Checked = question.Necessary;
                     this.txtSelection.Text = question.Selection;
+                    this.btnAddQuestion.Visible = false;
+                    this.btnEditQuestion.Visible = true;
                 }
             }
         }
 
         protected void ddlTemplate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(Guid.TryParse(this.ddlTemplate.SelectedValue, out Guid exampleID))
+            if (Guid.TryParse(this.ddlTemplate.SelectedValue, out Guid exampleID))
             {
                 List<QuestionModel> question = _mgr.GetQuestionList(exampleID);
                 HttpContext.Current.Session["qusetionModel"] = question;
                 InitRpt(question);
-               //Response.Redirect(Request.Url.ToString());
             }
             else
             {
                 InitRpt(new List<QuestionModel>());
             }
+        }
+
+        protected void btnEditQuestion_Click(object sender, EventArgs e)
+        {
+            if (Guid.TryParse(this.hfEditQID.Value, out Guid editQID))
+            {
+                int index = _questionSession.FindIndex(x => x.QuestionID == editQID);
+                QuestionModel question = _questionSession.Find(x => x.QuestionID == editQID);
+                _questionSession.RemoveAt(index);
+                FillSelectionContent(question);
+                _questionSession.Insert(index, question);
+                InitRpt(_questionSession);
+                InitTextbox();
+            }
+
+        }
+        private void InitDisabledInput()
+        {
+            this.ltlAlert.Visible = true;
+            this.ddlTemplate.Enabled = false;
+            this.txtQuestion.Enabled = false;
+            this.ddlQuestionType.Enabled = false;
+            this.ckbNecessary.Enabled = false;
+            this.txtSelection.Enabled = false;
+            this.btnAddQuestion.Enabled = false;
+            this.btnEditQuestion.Enabled = false;
+
         }
     }
 }
