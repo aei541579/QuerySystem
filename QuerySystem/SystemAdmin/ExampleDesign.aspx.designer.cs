@@ -42,6 +42,15 @@ namespace QuerySystem.SystemAdmin
         protected global::QuerySystem.SystemAdmin.ucLeftColumn ucLeftColumn;
 
         /// <summary>
+        /// ltlAlert 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ltlAlert;
+
+        /// <summary>
         /// txtTitle 控制項。
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace QuerySystem.SystemAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
+
+        /// <summary>
+        /// hfEditQID 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEditQID;
 
         /// <summary>
         /// txtQuestion 控制項。
@@ -94,6 +112,15 @@ namespace QuerySystem.SystemAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddQuestion;
+
+        /// <summary>
+        /// btnEditQuestion 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditQuestion;
 
         /// <summary>
         /// rptQuestion 控制項。

@@ -56,6 +56,22 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+            {
+                this.ltlAlert.Text = "**必須輸入問卷標題**";
+                return;
+            }
+            else if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
+            {
+                this.ltlAlert.Text = "**必須輸入起始時間**";
+                return;
+            }
+            else if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
+            {
+                this.ltlAlert.Text = "**必須輸入結束時間**";
+                return;
+            }
+
             QuestionnaireModel questionnaire = new QuestionnaireModel()
             {
                 QuestionnaireID = Guid.NewGuid(),

@@ -4,6 +4,7 @@
     
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:Label ID="ltlAlert" runat="server" ForeColor="Red"></asp:Label>
     <table class="table table-borderless">
         <tr>
             <td width="15%">問卷名稱</td>

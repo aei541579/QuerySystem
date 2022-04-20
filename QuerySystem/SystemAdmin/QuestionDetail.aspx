@@ -38,14 +38,7 @@
                 <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
                 <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
             </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-            </td>
-            <td>
-            </td>
-        </tr>
+        </tr>        
     </table>
     <table class="table table-striped">
         <tr>

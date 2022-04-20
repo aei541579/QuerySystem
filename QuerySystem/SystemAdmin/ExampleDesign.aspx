@@ -11,7 +11,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <uc1:ucJSScript runat="server" id="ucJSScript" />
+    <uc1:ucJSScript runat="server" ID="ucJSScript" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -21,20 +21,25 @@
             </div>
             <div class="row">
                 <div class="col-lg-2">
-                    <uc1:ucLeftColumn runat="server" id="ucLeftColumn" />
+                    <uc1:ucLeftColumn runat="server" ID="ucLeftColumn" />
                 </div>
                 <div class="col-lg-8">
+                    <asp:Label ID="ltlAlert" runat="server" ForeColor="Red" Visible="false"></asp:Label>
+
                     <table class="table table-borderless">
                         <tr>
-                            <td>範例標題</td>
-                            <td>
-                                <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+                            <td>標題</td>
+                            <td  width="50%">
+                                <asp:TextBox ID="txtTitle" runat="server" class="form-control"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td>問題</td>
                             <td>
-                                <asp:TextBox ID="txtQuestion" runat="server"></asp:TextBox>
+                                <asp:HiddenField ID="hfEditQID" runat="server" />
+                                <asp:TextBox ID="txtQuestion" runat="server" class="form-control"></asp:TextBox>
+                            </td>
+                            <td>
                                 <asp:DropDownList ID="ddlQuestionType" runat="server">
                                     <asp:ListItem Value="0">單選方塊</asp:ListItem>
                                     <asp:ListItem Value="1">複選方塊</asp:ListItem>
@@ -46,8 +51,11 @@
                         <tr>
                             <td>回答</td>
                             <td>
-                                <asp:TextBox ID="txtSelection" runat="server"></asp:TextBox>(多個答案以;分隔)
+                                <asp:TextBox ID="txtSelection" runat="server" class="form-control"></asp:TextBox>
+                            </td>
+                            <td>(多個答案以;分隔)
                 <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
+                                <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
                             </td>
                         </tr>
                     </table>

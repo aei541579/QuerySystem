@@ -28,14 +28,14 @@
                         <tr>
                             <td>問卷標題</td>
                             <td>
-                                <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtTitle" runat="server" placeHolder="請輸入欲搜尋之標題"></asp:TextBox>
                                 <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
                             </td>                            
                         </tr>
                         <tr>
                             <td>建立新範本</td>
                             <td>
-                                <asp:TextBox ID="txtCreate" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtCreate" runat="server" placeHolder="請輸入欲新增之標題"></asp:TextBox>
                                 <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
                             </td>
                         </tr>

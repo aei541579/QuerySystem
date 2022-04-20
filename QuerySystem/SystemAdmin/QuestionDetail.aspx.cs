@@ -144,6 +144,7 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            //若資料庫已存在問題，一併先刪除舊問題，再寫入更新後問題
             if (_mgr.GetQuestionList(_questionnaireID) != null)
                 _mgr.DeleteQuestion(_questionnaireID);
 

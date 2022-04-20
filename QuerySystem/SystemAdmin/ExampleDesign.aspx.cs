@@ -57,25 +57,51 @@ namespace QuerySystem.SystemAdmin
             this.ddlQuestionType.SelectedIndex = 0;
             this.ckbNecessary.Checked = false;
             this.txtSelection.Text = "";
+            this.btnAddQuestion.Visible = true;
+            this.btnEditQuestion.Visible = false;
         }
 
 
         protected void btnAddQuestion_Click(object sender, EventArgs e)
-        {
-            //_questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
+        {            
             QuestionModel question = new QuestionModel();
+            FillSelectionContent(question, out bool noInput);
+            if (noInput)
+                return;
             question.QuestionID = Guid.NewGuid();
-            question.QuestionnaireID = _questionnaireID;
-            question.QuestionVal = this.txtQuestion.Text.Trim();
-            question.Selection = this.txtSelection.Text.Trim();
-            question.Type = (QuestionType)Convert.ToInt32(this.ddlQuestionType.SelectedValue);
-            question.Necessary = this.ckbNecessary.Checked;
+
             _questionSession.Add(question);
             HttpContext.Current.Session["qusetionModel"] = _questionSession;
             InitRpt(_questionSession);
             InitTextbox();
         }
-
+        private void FillSelectionContent(QuestionModel question, out bool noInput)
+        {
+            noInput = false;
+            question.QuestionnaireID = _questionnaireID;
+            question.Type = (QuestionType)Convert.ToInt32(this.ddlQuestionType.SelectedValue);
+            if (NoInput(this.txtQuestion.Text.Trim()))
+                noInput = true;
+            question.QuestionVal = this.txtQuestion.Text.Trim();
+            if (question.Type != QuestionType.文字 && NoInput(this.txtSelection.Text.Trim()))
+                noInput = true;
+            question.Selection = this.txtSelection.Text.Trim();
+            question.Necessary = this.ckbNecessary.Checked;
+        }
+        private bool NoInput(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**問題尚未輸入完畢**";
+                return true;
+            }
+            else
+            {
+                this.ltlAlert.Visible = false;
+                return false;
+            }
+        }
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             List<QuestionModel> needList = new List<QuestionModel>();
@@ -101,9 +127,12 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            //_questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
+            //若標題有被修改，則寫入新標題
             if (string.Compare(_mgr.GetExample(_questionnaireID).QueryName, this.txtTitle.Text.Trim()) != 0)
                 _mgr.UpdateExample(_questionnaireID, this.txtTitle.Text.Trim());
+
+            if (_mgr.GetQuestionList(_questionnaireID) != null)
+                _mgr.DeleteQuestion(_questionnaireID);
 
             int questionNo = 1;
             foreach (QuestionModel question in _questionSession)
@@ -113,6 +142,7 @@ namespace QuerySystem.SystemAdmin
 
                 questionNo++;
             }
+            HttpContext.Current.Session.Remove("qusetionModel");
             Response.Redirect("ExampleList.aspx");
         }
 
@@ -123,11 +153,30 @@ namespace QuerySystem.SystemAdmin
                 if (e.CommandName == "lkbEdit" && Guid.TryParse(e.CommandArgument.ToString(), out Guid questionID))
                 {
                     QuestionModel question = _questionSession.Find(x => x.QuestionID == questionID);
+                    this.hfEditQID.Value = question.QuestionID.ToString();
                     this.txtQuestion.Text = question.QuestionVal;
                     this.ddlQuestionType.SelectedIndex = (int)question.Type;
                     this.ckbNecessary.Checked = question.Necessary;
                     this.txtSelection.Text = question.Selection;
+                    this.btnAddQuestion.Visible = false;
+                    this.btnEditQuestion.Visible = true;
                 }
+            }
+        }
+
+        protected void btnEditQuestion_Click(object sender, EventArgs e)
+        {
+            if (Guid.TryParse(this.hfEditQID.Value, out Guid editQID))
+            {
+                int index = _questionSession.FindIndex(x => x.QuestionID == editQID);
+                QuestionModel question = _questionSession.Find(x => x.QuestionID == editQID);
+                FillSelectionContent(question, out bool noInput);
+                if (noInput)
+                    return;
+                _questionSession.RemoveAt(index);
+                _questionSession.Insert(index, question);
+                InitRpt(_questionSession);
+                InitTextbox();
             }
         }
     }
