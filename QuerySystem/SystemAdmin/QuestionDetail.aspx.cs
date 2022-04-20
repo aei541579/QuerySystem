@@ -265,6 +265,11 @@ namespace QuerySystem.SystemAdmin
             this.btnAddQuestion.Enabled = false;
             this.btnEditQuestion.Enabled = false;
             this.btnDelete.Enabled = false;
+            foreach (RepeaterItem item in this.rptQuestion.Items)
+            {
+                LinkButton lkbEdit = item.FindControl("lkbEdit") as LinkButton;
+                lkbEdit.Enabled = false;
+            }
         }
     }
 }

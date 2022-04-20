@@ -105,6 +105,7 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.RemoveAll();
             Response.Redirect("List.aspx");
         }
     }
