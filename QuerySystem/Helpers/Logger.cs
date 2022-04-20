@@ -17,6 +17,8 @@ namespace QuerySystem.Helpers
                                 {ex.ToString()}
                                 ---------\r\n
                                 {Environment.NewLine}";
+            if (!File.Exists(_savePath))
+                File.Create(_savePath);
             File.AppendAllText(_savePath, content);
         }
     }
