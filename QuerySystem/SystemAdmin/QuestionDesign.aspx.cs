@@ -91,10 +91,10 @@ namespace QuerySystem.SystemAdmin
                 errorMsg += "**必須輸入問卷標題**<br/>";
             if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
                 errorMsg += "**必須輸入起始日期**<br/>";
-            if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
-                errorMsg += "**必須輸入結束日期**<br/>";
             else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today)
                 errorMsg += "**起始日期不可早於今天**<br/>";
+            else if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
+                errorMsg += "**必須輸入結束日期**<br/>";
             else if (Convert.ToDateTime(this.txtStartTime.Text) > Convert.ToDateTime(this.txtEndTime.Text))
                 errorMsg += "**起始日期不可晚於結束日期**<br/>";
 

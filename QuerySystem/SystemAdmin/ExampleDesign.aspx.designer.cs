@@ -123,15 +123,6 @@ namespace QuerySystem.SystemAdmin
         protected global::System.Web.UI.WebControls.Button btnEditQuestion;
 
         /// <summary>
-        /// rptQuestion 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptQuestion;
-
-        /// <summary>
         /// btnDelete 控制項。
         /// </summary>
         /// <remarks>
@@ -139,6 +130,15 @@ namespace QuerySystem.SystemAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDelete;
+
+        /// <summary>
+        /// rptQuestion 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptQuestion;
 
         /// <summary>
         /// btnCancel 控制項。

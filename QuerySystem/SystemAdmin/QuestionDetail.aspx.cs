@@ -215,13 +215,13 @@ namespace QuerySystem.SystemAdmin
             this.ltlAlert.Visible = true;
             this.ltlAlert.Text = "**已經有人作答了，問題不能再修改了喔 **";
             this.ddlTemplate.Enabled = false;
-            this.txtQuestion.Enabled = false;
+            this.txtQuestion.Attributes.Add("disabled", "disable");
             this.ddlQuestionType.Enabled = false;
             this.ckbNecessary.Enabled = false;
-            this.txtSelection.Enabled = false;
+            this.txtSelection.Attributes.Add("disabled", "disable");
             this.btnAddQuestion.Enabled = false;
             this.btnEditQuestion.Enabled = false;
-
+            this.btnDelete.Enabled = false;
         }
     }
 }

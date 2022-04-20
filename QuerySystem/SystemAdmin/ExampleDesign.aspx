@@ -29,7 +29,7 @@
                     <table class="table table-borderless">
                         <tr>
                             <td>標題</td>
-                            <td  width="50%">
+                            <td width="50%">
                                 <asp:TextBox ID="txtTitle" runat="server" class="form-control"></asp:TextBox>
                             </td>
                         </tr>
@@ -61,7 +61,9 @@
                     </table>
                     <table class="table table-striped">
                         <tr>
-                            <th></th>
+                            <th width="10%">
+                                <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
+                            </th>
                             <th>#</th>
                             <th>問題</th>
                             <th>種類</th>
@@ -94,7 +96,6 @@
                             </ItemTemplate>
                         </asp:Repeater>
                     </table>
-                    <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
                     <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
                     <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
                 </div>
@@ -102,5 +103,23 @@
         </div>
 
     </form>
+    <script>
+        $(document).ready(function () {
+            var txt = $("input[id*=txtSelection]");
+            var parentDdl = $("select[id*=ddlQuestionType]")
+            var txtDdl = parentDdl.find("option[value=2]");
+            txtDdl.click(function () {
+                txt.attr("disabled", "disable");
+            })
+            var rdbDdl = parentDdl.find("option[value=0]");
+            rdbDdl.click(function () {
+                txt.removeAttr("disabled", "disable");
+            })
+            var ckbDdl = parentDdl.find("option[value=1]");
+            ckbDdl.click(function () {
+                txt.removeAttr("disabled", "disable");
+            })
+        })
+    </script>
 </body>
 </html>

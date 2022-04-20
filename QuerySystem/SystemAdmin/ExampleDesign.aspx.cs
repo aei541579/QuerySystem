@@ -63,7 +63,7 @@ namespace QuerySystem.SystemAdmin
 
 
         protected void btnAddQuestion_Click(object sender, EventArgs e)
-        {            
+        {
             QuestionModel question = new QuestionModel();
             FillSelectionContent(question, out bool noInput);
             if (noInput)
@@ -158,6 +158,10 @@ namespace QuerySystem.SystemAdmin
                     this.ddlQuestionType.SelectedIndex = (int)question.Type;
                     this.ckbNecessary.Checked = question.Necessary;
                     this.txtSelection.Text = question.Selection;
+                    if (question.Type == QuestionType.文字)
+                        this.txtSelection.Attributes.Add("disabled", "disable");
+                    else
+                        this.txtSelection.Attributes.Remove("disabled");
                     this.btnAddQuestion.Visible = false;
                     this.btnEditQuestion.Visible = true;
                 }

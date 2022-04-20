@@ -33,16 +33,17 @@
             <td>
                 <asp:TextBox ID="txtSelection" runat="server" class="form-control"></asp:TextBox>
             </td>
-            <td>
-                (多個答案以;分隔)
+            <td>(多個答案以;分隔)
                 <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
                 <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
             </td>
-        </tr>        
+        </tr>
     </table>
     <table class="table table-striped">
         <tr>
-            <th></th>
+            <th width="10%">
+                <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
+            </th>
             <th>#</th>
             <th>問題</th>
             <th>種類</th>
@@ -75,7 +76,6 @@
             </ItemTemplate>
         </asp:Repeater>
     </table>
-    <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
     <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
     <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
 
@@ -98,7 +98,7 @@
                 txt.removeAttr("disabled", "disable");
             })
         })
-        
+
     </script>
 
 </asp:Content>
