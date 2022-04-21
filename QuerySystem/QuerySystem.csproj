@@ -75,6 +75,7 @@
     <Content Include="JS\bootstrap.min.js" />
     <Content Include="JS\jquery.min.js" />
     <Content Include="List.aspx" />
+    <Content Include="ShareControls\ucPager.ascx" />
     <Content Include="Stastic.aspx" />
     <Content Include="SystemAdmin\AnswerDetail.aspx" />
     <Content Include="SystemAdmin\AnswerList.aspx" />
@@ -125,6 +126,13 @@
     <Compile Include="Models\QuestionnaireModel.cs" />
     <Compile Include="Models\StasticModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShareControls\ucPager.ascx.cs">
+      <DependentUpon>ucPager.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShareControls\ucPager.ascx.designer.cs">
+      <DependentUpon>ucPager.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Stastic.aspx.cs">
       <DependentUpon>Stastic.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

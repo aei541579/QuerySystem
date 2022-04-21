@@ -7,110 +7,92 @@
 // </自動產生的>
 //------------------------------------------------------------------------------
 
-namespace QuerySystem.SystemAdmin
+namespace QuerySystem.ShareControls
 {
 
 
-    public partial class List
+    public partial class ucPager
     {
 
         /// <summary>
-        /// ucJSScript 控制項。
+        /// aLinkFirst 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::QuerySystem.ucJSScript ucJSScript;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkFirst;
 
         /// <summary>
-        /// form1 控制項。
+        /// aLinkPrev 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPrev;
 
         /// <summary>
-        /// ucLeftColumn 控制項。
+        /// aLinkPage1 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::QuerySystem.SystemAdmin.ucLeftColumn ucLeftColumn;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPage1;
 
         /// <summary>
-        /// txtTitle 控制項。
+        /// aLinkPage2 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPage2;
 
         /// <summary>
-        /// txtStartTime 控制項。
+        /// aLinkPage3 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStartTime;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPage3;
 
         /// <summary>
-        /// txtEndTime 控制項。
+        /// aLinkPage4 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndTime;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPage4;
 
         /// <summary>
-        /// btnSearch 控制項。
+        /// aLinkPage5 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkPage5;
 
         /// <summary>
-        /// rptTable 控制項。
+        /// aLinkNext 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptTable;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkNext;
 
         /// <summary>
-        /// ucPager 控制項。
+        /// aLinkLast 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::QuerySystem.ShareControls.ucPager ucPager;
-
-        /// <summary>
-        /// btnDelete 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDelete;
-
-        /// <summary>
-        /// btnCreate 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreate;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor aLinkLast;
     }
 }

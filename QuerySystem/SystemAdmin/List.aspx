@@ -2,6 +2,8 @@
 
 <%@ Register Src="~/ShareControls/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
 <%@ Register Src="~/ShareControls/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+<%@ Register Src="~/ShareControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
+
 
 
 
@@ -60,7 +62,7 @@
                             <th>結束時間</th>
                             <th>觀看統計</th>
                         </tr>
-                        <asp:Repeater ID="rptTable" runat="server" OnItemCommand="rptTable_ItemCommand">
+                        <asp:Repeater ID="rptTable" runat="server" >
                             <ItemTemplate>
                                 <asp:HiddenField ID="hfID" runat="server" Value='<%#Eval("QuestionnaireID") %>' />
                                 <tr>
@@ -78,7 +80,7 @@
                                         <asp:Label ID="lblState" runat="server" Text='<%#Eval("State") %>'></asp:Label>
                                     </td>
                                     <td>
-                                        <asp:Label ID="lblStartTime" runat="server" Text='<%#Eval("StartTime") %>'></asp:Label>
+                                        <asp:Label ID="lblStartTime" runat="server" Text='<%#Eval("StartTime")%>'></asp:Label>
                                     </td>
                                     <td>
                                         <asp:Label ID="lblEndTime" runat="server" Text='<%#Eval("EndTime") %>'></asp:Label>
@@ -90,6 +92,9 @@
                             </ItemTemplate>
                         </asp:Repeater>
                     </table>
+                    <div>
+                        <uc1:ucPager runat="server" ID="ucPager" />
+                    </div>
                     <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
                     <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
                 </div>

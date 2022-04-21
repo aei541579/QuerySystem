@@ -17,7 +17,7 @@ namespace QuerySystem.Models
     }
     public enum StateType
     {
-       已關閉 = 0,
-       開放 = 1
+        已關閉 = 0,
+        開放 = 1
     }
 }
