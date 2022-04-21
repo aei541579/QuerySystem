@@ -43,10 +43,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-       /// <summary>
-       /// 取得所有問卷(非常用問卷)的清單
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// 取得所有問卷(非常用問卷)的清單
+        /// </summary>
+        /// <returns></returns>
         public List<QuestionnaireModel> GetQuestionnaireList()
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -126,14 +126,23 @@ namespace QuerySystem.Managers
         /// 取得該分頁的清單
         /// </summary>
         /// <returns></returns>
-        public List<QuestionnaireModel> GetIndexList(int pageIndex,int pageSize, List<QuestionnaireModel> list)
+        public List<QuestionnaireModel> GetIndexList(int pageIndex, int pageSize, List<QuestionnaireModel> list)
         {
             int skip = pageSize * (pageIndex - 1);  //計算跳頁數
             if (skip < 0)
                 skip = 0;
 
-            return list.Skip(skip).Take(pageSize).ToList();         
-            
+            return list.Skip(skip).Take(pageSize).ToList();
+
+        }
+        public List<T> GetIndexList(int pageIndex, int pageSize, List<T> list)
+        {
+            int skip = pageSize * (pageIndex - 1);  //計算跳頁數
+            if (skip < 0)
+                skip = 0;
+
+            return list.Skip(skip).Take(pageSize).ToList();
+
         }
         public void CreateQuestionnaire(QuestionnaireModel questionnaire)
         {
@@ -789,6 +798,6 @@ namespace QuerySystem.Managers
     }
     public interface T
     {
-        T GetT(T t);
+
     }
 }

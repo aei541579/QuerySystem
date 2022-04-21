@@ -21,7 +21,8 @@ namespace QuerySystem.SystemAdmin
             if (string.IsNullOrWhiteSpace(IDstring))
             {
                 isCreateMode = true;
-                initCreateMode();
+                if (!IsPostBack)
+                    initCreateMode();
                 HttpContext.Current.Session.Remove("ID");
             }
             else if (Guid.TryParse(IDstring, out _questionnaireID))
@@ -91,7 +92,7 @@ namespace QuerySystem.SystemAdmin
                 errorMsg += "**必須輸入問卷標題**<br/>";
             if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
                 errorMsg += "**必須輸入起始日期**<br/>";
-            else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today)
+            else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today && isCreateMode)
                 errorMsg += "**起始日期不可早於今天**<br/>";
             else if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
                 errorMsg += "**必須輸入結束日期**<br/>";
