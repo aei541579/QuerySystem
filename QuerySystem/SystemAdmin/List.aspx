@@ -1,7 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="QuerySystem.SystemAdmin.List" %>
 
-<%@ Register Src="~/SystemAdmin/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
-<%@ Register Src="~/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+<%@ Register Src="~/ShareControls/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+<%@ Register Src="~/ShareControls/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
+
+
 
 
 
@@ -21,7 +23,7 @@
                 </div>
             <div class="row">
                 <div class="col-lg-2">
-                    <uc1:ucLeftColumn runat="server" id="ucLeftColumn" />
+                    <uc1:ucLeftColumn runat="server" ID="ucLeftColumn" />
                 </div>
                 <div class="col-lg-8">
                     <table class="table table-borderless">
