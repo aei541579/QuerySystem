@@ -1,6 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="QuerySystem.List" %>
 
 <%@ Register Src="~/ShareControls/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+<%@ Register Src="~/ShareControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
+
 
 
 <!DOCTYPE html>
@@ -75,6 +77,7 @@
                             </ItemTemplate>
                         </asp:Repeater>
                     </table>
+                    <uc1:ucPager runat="server" ID="ucPager" />
                 </div>
             </div>
         </div>

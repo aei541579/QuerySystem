@@ -12,23 +12,61 @@ namespace QuerySystem
     public partial class List : System.Web.UI.Page
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
+        private const int _pageSize = 5;
+        private static int _pageIndex;
+        private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.RemoveAll();
+            string pageIndexText = this.Request.QueryString["Page"];
+            _pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+
             if (!IsPostBack)
             {
-                List<QuestionnaireModel> questionnaireList = _mgr.GetQuestionnaireList();
-                InitRpt(questionnaireList);
-
+                GetSearchResult();                
             }
         }
+        private void GetSearchResult()
+        {
+            List<QuestionnaireModel> searchList = new List<QuestionnaireModel>();
+            string keyword = this.Request.QueryString["keyword"];
+            string start = this.Request.QueryString["start"];
+            string end = this.Request.QueryString["end"];
+            List<QuestionnaireModel> dataList =
+                string.IsNullOrWhiteSpace(keyword)
+                ? _mgr.GetQuestionnaireList()
+                : _mgr.GetQuestionnaireList(keyword);
+            this.txtTitle.Text = keyword;
+            if (DateTime.TryParse(start, out DateTime startTime))
+                this.txtStartTime.Text = startTime.ToString("yyyy-MM-dd");
+            if (DateTime.TryParse(end, out DateTime endTime))
+                this.txtEndTime.Text = endTime.ToString("yyyy-MM-dd");
+
+            foreach (QuestionnaireModel result in dataList)
+            {
+                if (start != null && result.StartTime < startTime)
+                    continue;
+                else if (end != null && result.EndTime > endTime)
+                    continue;
+                searchList.Add(result);
+            }
+            List<QuestionnaireModel> resultList = _mgr.GetIndexList(_pageIndex, _pageSize, searchList);
+            _totalRows = searchList.Count;
+            this.ucPager.totalRows = _totalRows;
+            this.ucPager.pageIndex = _pageIndex;
+            string[] paramKey = { "keyword", "start", "end" };
+            string[] paramValues = { keyword, start, end };
+            this.ucPager.Bind(paramKey, paramValues);
+            InitRpt(resultList);
+        }
+
         private void InitRpt(List<QuestionnaireModel> questionnaireList)
         {
             this.rptTable.DataSource = questionnaireList;
             this.rptTable.DataBind();
-            int i = questionnaireList.Count;
+            int i = _totalRows - (_pageIndex - 1) * _pageSize;
             foreach (RepeaterItem item in this.rptTable.Items)
-            {
-                
+            {                
                 Label lblNumber = item.FindControl("lblNumber") as Label;
                 lblNumber.Text = i.ToString();
                 i--;
@@ -37,24 +75,14 @@ namespace QuerySystem
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            List<QuestionnaireModel> searchList = new List<QuestionnaireModel>();
-            List<QuestionnaireModel> dataList =
-                (string.IsNullOrWhiteSpace(this.txtTitle.Text))
-                ? _mgr.GetQuestionnaireList()
-                : _mgr.GetQuestionnaireList(this.txtTitle.Text);
-
-            foreach (QuestionnaireModel result in dataList)
-            {
-                if (DateTime.TryParse(this.txtStartTime.Text, out DateTime startTime) &&
-                    result.StartTime < startTime)
-                    return;
-                else if (DateTime.TryParse(this.txtEndTime.Text, out DateTime endTime) &&
-                   result.EndTime > endTime)
-                    return;
-                searchList.Add(result);
-            }
-            InitRpt(searchList);
-
+            string redirectUrl = this.Request.Url.LocalPath + "?Page=1";
+            if (!string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+                redirectUrl += "&keyword=" + this.txtTitle.Text.Trim();
+            if (DateTime.TryParse(this.txtStartTime.Text, out DateTime startTime))
+                redirectUrl += "&start=" + startTime.ToShortDateString();
+            if (DateTime.TryParse(this.txtEndTime.Text, out DateTime endTime))
+                redirectUrl += "&end=" + endTime.ToShortDateString();
+            Response.Redirect(redirectUrl);
         }
 
     }
