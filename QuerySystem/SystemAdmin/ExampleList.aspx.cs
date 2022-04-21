@@ -12,20 +12,37 @@ namespace QuerySystem.SystemAdmin
     public partial class ExampleList : System.Web.UI.Page
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
+        private const int _pageSize = 5;
+        private static int _pageIndex;
+        private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
         {
+            string pageIndexText = this.Request.QueryString["Page"];
+            _pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+
             if (!IsPostBack)
             {
-                List<QuestionnaireModel> questionnaireList = _mgr.GetExampleList();
-                InitRpt(questionnaireList);
-
+                string keyword = this.Request.QueryString["keyword"];
+                List<QuestionnaireModel> questionnaireList =
+                    string.IsNullOrWhiteSpace(keyword)
+                    ? _mgr.GetExampleList()
+                    : _mgr.GetExampleList(keyword);
+                List<QuestionnaireModel> resultList = _mgr.GetIndexList(_pageIndex, _pageSize, questionnaireList);
+                this.txtTitle.Text = keyword;
+                _totalRows = resultList.Count;
+                this.ucPager.totalRows = _totalRows;
+                this.ucPager.pageIndex = _pageIndex;
+                string[] paramKey = { "keyword"};
+                string[] paramValues = { keyword};
+                this.ucPager.Bind(paramKey, paramValues);
+                InitRpt(resultList);
             }
         }
         private void InitRpt(List<QuestionnaireModel> questionnaireList)
         {
             this.rptTable.DataSource = questionnaireList;
             this.rptTable.DataBind();
-            int i = questionnaireList.Count;
+            int i = _totalRows - (_pageIndex - 1) * _pageSize;
             foreach (RepeaterItem item in this.rptTable.Items)
             {
                 Label lblNumber = item.FindControl("lblNumber") as Label;
@@ -44,18 +61,15 @@ namespace QuerySystem.SystemAdmin
             }
             List<QuestionnaireModel> questionnaireList = _mgr.GetExampleList();
             InitRpt(questionnaireList);
+            Response.Redirect(this.Request.Url.LocalPath + "?Page=1");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            //List<QuestionnaireModel> searchList = new List<QuestionnaireModel>();
-            List<QuestionnaireModel> searchList =
-                (string.IsNullOrWhiteSpace(this.txtTitle.Text))
-                ? _mgr.GetExampleList()
-                : _mgr.GetExampleList(this.txtTitle.Text);
-
-            InitRpt(searchList);
-
+        {            
+            string redirectUrl = this.Request.Url.LocalPath + "?Page=1";
+            if (!string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+                redirectUrl += "&keyword=" + this.txtTitle.Text.Trim();
+            Response.Redirect(redirectUrl);
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)

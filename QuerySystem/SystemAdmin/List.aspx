@@ -22,7 +22,7 @@
         <div class="container">
             <div class="row">
                 <h2>後台-問卷管理</h2>
-                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-2">
                     <uc1:ucLeftColumn runat="server" ID="ucLeftColumn" />
@@ -54,7 +54,9 @@
 
                     <table class="table table-striped">
                         <tr>
-                            <th></th>
+                            <th>
+                                <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
+                            </th>
                             <th>#</th>
                             <th>問卷</th>
                             <th>狀態</th>
@@ -62,7 +64,7 @@
                             <th>結束時間</th>
                             <th>觀看統計</th>
                         </tr>
-                        <asp:Repeater ID="rptTable" runat="server" >
+                        <asp:Repeater ID="rptTable" runat="server">
                             <ItemTemplate>
                                 <asp:HiddenField ID="hfID" runat="server" Value='<%#Eval("QuestionnaireID") %>' />
                                 <tr>
@@ -95,7 +97,6 @@
                     <div>
                         <uc1:ucPager runat="server" ID="ucPager" />
                     </div>
-                    <asp:Button ID="btnDelete" runat="server" Text="刪除" OnClick="btnDelete_Click" />
                     <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
                 </div>
             </div>

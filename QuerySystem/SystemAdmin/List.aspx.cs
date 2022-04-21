@@ -84,6 +84,7 @@ namespace QuerySystem.SystemAdmin
             }
             List<QuestionnaireModel> questionnaireList = _mgr.GetQuestionnaireList();
             InitRpt(questionnaireList);
+            Response.Redirect(this.Request.Url.LocalPath + "?Page=1");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)

@@ -2,6 +2,8 @@
 
 <%@ Register Src="~/ShareControls/ucLeftColumn.ascx" TagPrefix="uc1" TagName="ucLeftColumn" %>
 <%@ Register Src="~/ShareControls/ucJSScript.ascx" TagPrefix="uc1" TagName="ucJSScript" %>
+<%@ Register Src="~/ShareControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
+
 
 
 
@@ -73,7 +75,7 @@
                 </div>
             </div>
         </div>
-
+        <uc1:ucPager runat="server" ID="ucPager" />
     </form>
 </body>
 </html>
