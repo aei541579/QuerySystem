@@ -1,4 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SystemAdmin/SystemAdmin.Master" AutoEventWireup="true" CodeBehind="AnswerList.aspx.cs" Inherits="QuerySystem.SystemAdmin.AnswerList" %>
+
+<%@ Register Src="~/ShareControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -29,7 +32,7 @@
             </ItemTemplate>
         </asp:Repeater>
         </table>
-
+    <uc1:ucPager runat="server" ID="ucPager" />
     <script>
         $(document).ready(function () {
             $("#Alist").addClass("active");

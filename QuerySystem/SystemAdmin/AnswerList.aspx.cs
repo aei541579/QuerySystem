@@ -17,15 +17,27 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<PersonModel> _personList;
+        private const int _pageSize = 5;
         protected void Page_Load(object sender, EventArgs e)
         {
             string IDstring = Request.QueryString["ID"];
+            string pageIndexText = this.Request.QueryString["Page"];
+            int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+
             if (Guid.TryParse(IDstring, out _questionnaireID))
             {
+
                 _personList = _mgr.GetPersonList(_questionnaireID);
-                this.rptList.DataSource = _personList;
+                List<PersonModel> showList = GetIndexList(pageIndex, _personList);
+                this.ucPager.totalRows = _personList.Count;
+                this.ucPager.pageIndex = pageIndex;
+                string[] paramKey = { "ID" };
+                string[] paramValues = { _questionnaireID.ToString() };
+                this.ucPager.Bind(paramKey, paramValues);
+
+                this.rptList.DataSource = showList;
                 this.rptList.DataBind();
-                int i = _personList.Count;
+                int i = _personList.Count - (pageIndex - 1) * _pageSize;
                 foreach (RepeaterItem item in this.rptList.Items)
                 {
                     Label lblNumber = item.FindControl("lblNumber") as Label;
@@ -35,6 +47,14 @@ namespace QuerySystem.SystemAdmin
             }
             else
                 Response.Redirect("List.aspx");
+        }
+        private List<PersonModel> GetIndexList(int pageIndex, List<PersonModel> list)
+        {
+            int skip = _pageSize * (pageIndex - 1);
+            if (skip < 0)
+                skip = 0;
+
+            return list.Skip(skip).Take(_pageSize).ToList();
         }
 
         protected void btnExport_Click(object sender, EventArgs e)
