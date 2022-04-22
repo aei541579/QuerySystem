@@ -66,10 +66,8 @@
             $("input[id=btnSubmit]").click(function () {
                 var inputCorrext = false;
                 var Neclist = $(".Necessary").get();
-                console.log(Neclist);
                 for (var necItem of Neclist) {
                     if (necItem.tagName == 'INPUT') {
-                        console.log(necItem);
                         if (necItem.value == "") {
                             inputCorrext = false;
                             alert("尚未作答完畢");
@@ -78,16 +76,13 @@
                     }
                     if (necItem.tagName == 'TABLE') {
                         var parentTable = $(`#${necItem.id}`);
-                        console.log(parentTable);
                         var SList = parentTable.find('input').get();
-                        console.log(SList);
                         var SChecked = [];
                         for (var selection of SList) {
                             if (selection.checked) {
                                 SChecked.push(selection);
                             }
                         }
-                        console.log(SChecked);
                         if (SChecked.length == 0) {
                             inputCorrext = false;
                             alert("尚未作答完畢");
@@ -101,7 +96,6 @@
                 if (inputCorrext) {
                     var answer = "";
                     var QList = $("input[id*=Q]").get();
-                    console.log(QList);
                     for (var item of QList) {
                         if (item.type == "radio" && item.checked) {
                             answer += item.id + ";";
@@ -128,7 +122,10 @@
                                 window.location = "ConfirmPage.aspx?ID=" + $("#hfID").val();
                             }
                             if (txtMsg == "noAnswer") {
-                                alert("請作答");
+                                alert("您尚未作答");
+                            }
+                            if (txtMsg == "errorInput") {
+                                alert("基本資料填寫格式不正確");
                             }
                         },
                         error: function (msg) {
