@@ -53,13 +53,7 @@ namespace QuerySystem.API
                     AnswerModel answer = new AnswerModel();
                     answer.PersonID = person.PersonID;
                     answer.QuestionnaireID = questionnaireID;
-                    answer.QuestionNo = Convert.ToInt32(ans[0].Replace('Q', '0'));
-                    //if(string.IsNullOrWhiteSpace(ans[1]))
-                    //{
-                    //    context.Response.ContentType = "text/plain";
-                    //    context.Response.Write("noAnswer");
-                    //    return;
-                    //}
+                    answer.QuestionNo = Convert.ToInt32(ans[0].Replace('Q', '0'));                    
                     answer.Answer = ans[1];
 
                     answerList.Add(answer);

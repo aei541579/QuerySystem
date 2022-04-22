@@ -84,7 +84,7 @@ namespace QuerySystem.SystemAdmin
             for (int i = 0; i < arrQue.Length; i++)
             {
                 ListItem item = new ListItem(arrQue[i], i.ToString());
-                if (ckbList.Find(x => x.Answer == i.ToString()) != null)
+                if (ckbList != null && ckbList.Exists(x => x.Answer == i.ToString()))
                     item.Selected = true;
                 checkBoxList.Items.Add(item);
             }
@@ -95,7 +95,8 @@ namespace QuerySystem.SystemAdmin
             TextBox textBox = new TextBox();
             textBox.ID = "Q" + question.QuestionNo;
             textBox.Enabled = false;
-            textBox.Text = txt.Answer;
+            if (txt != null)
+                textBox.Text = txt.Answer;
             this.plcDynamic.Controls.Add(textBox);
         }
     }

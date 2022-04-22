@@ -109,10 +109,8 @@
                         if (item.type == "checkbox" && item.checked) {
                             answer += item.id + ";";
                         }
-                        if (item.type == "text") {
-                            if (item.value != "") {
-                                answer += `${item.id}_${item.value}` + ";";
-                            }
+                        if (item.type == "text" && item.value != "") {
+                            answer += `${item.id}_${item.value}` + ";";
                         }
                     }
                     var postData = {
