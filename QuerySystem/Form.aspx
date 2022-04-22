@@ -27,25 +27,25 @@
                         <tr>
                             <td>姓名</td>
                             <td>
-                                <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="txtName" CssClass="Necessary" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td>手機</td>
                             <td>
-                                <asp:TextBox ID="txtMobile" runat="server" TextMode="Phone"></asp:TextBox>
+                                <asp:TextBox ID="txtMobile" CssClass="Necessary" runat="server" TextMode="Phone"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td>Email</td>
                             <td>
-                                <asp:TextBox ID="txtMail" runat="server" TextMode="Email"></asp:TextBox>
+                                <asp:TextBox ID="txtMail" CssClass="Necessary" runat="server" TextMode="Email"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
                             <td>年齡</td>
                             <td>
-                                <asp:TextBox ID="txtAge" runat="server" TextMode="Number"></asp:TextBox>
+                                <asp:TextBox ID="txtAge" CssClass="Necessary" runat="server" TextMode="Number"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
@@ -64,46 +64,82 @@
     <script>
         $(document).ready(function () {
             $("input[id=btnSubmit]").click(function () {
-                var answer = "";
-                var QList = $("input[id*=Q]").get();
-                console.log(QList);
-                for (var item of QList) {
-                    if (item.type == "radio" && item.checked) {
-                        answer += item.id + " ";
+                var inputCorrext = false;
+                var Neclist = $(".Necessary").get();
+                console.log(Neclist);
+                for (var necItem of Neclist) {
+                    if (necItem.tagName == 'INPUT') {
+                        console.log(necItem);
+                        if (necItem.value == "") {
+                            inputCorrext = false;
+                            alert("尚未作答完畢");
+                            return;
+                        }
                     }
-                    if (item.type == "checkbox" && item.checked) {
-                        answer += item.id + " ";
-                    }
-                    if (item.type == "text") {
-                        answer += `${item.id}_${item.value}` + " ";
+                    if (necItem.tagName == 'TABLE') {
+                        var parentTable = $(`#${necItem.id}`);
+                        console.log(parentTable);
+                        var SList = parentTable.find('input').get();
+                        console.log(SList);
+                        var SChecked = [];
+                        for (var selection of SList) {
+                            if (selection.checked) {
+                                SChecked.push(selection);
+                            }
+                        }
+                        console.log(SChecked);
+                        if (SChecked.length == 0) {
+                            inputCorrext = false;
+                            alert("尚未作答完畢");
+                            return;
+                        }
                     }
                 }
-                var postData = {
-                    "Answer": answer,
-                    "Name": $("#txtName").val(),
-                    "Mobile": $("#txtMobile").val(),
-                    "Email": $("#txtMail").val(),
-                    "Age": $("#txtAge").val()
-                };
+                inputCorrext = true;
 
-                $.ajax({
-                    url: "/API/AnswerHandler.ashx?ID=" + $("#hfID").val(),
-                    method: "POST",
-                    data: postData,
-                    success: function (txtMsg) {
-                        console.log(txtMsg);
-                        if (txtMsg == "success") {
-                            window.location = "ConfirmPage.aspx?ID=" + $("#hfID").val();
+
+                if (inputCorrext) {
+                    var answer = "";
+                    var QList = $("input[id*=Q]").get();
+                    console.log(QList);
+                    for (var item of QList) {
+                        if (item.type == "radio" && item.checked) {
+                            answer += item.id + ";";
                         }
-                        if (txtMsg == "noAnswer") {
-                            alert("請作答");
+                        if (item.type == "checkbox" && item.checked) {
+                            answer += item.id + ";";
                         }
-                    },
-                    error: function (msg) {
-                        console.log(msg);
-                        alert("通訊失敗，請聯絡管理員。");
+                        if (item.type == "text") {
+                            if (item.value != "") {
+                                answer += `${item.id}_${item.value}` + ";";
+                            }
+                        }
                     }
-                });
+                    var postData = {
+                        "Answer": answer,
+                        "Profile": `${$("#txtName").val()};${$("#txtMobile").val()};${$("#txtMail").val()};${$("#txtAge").val()}`
+                    };
+
+                    $.ajax({
+                        url: "/API/AnswerHandler.ashx?ID=" + $("#hfID").val(),
+                        method: "POST",
+                        data: postData,
+                        success: function (txtMsg) {
+                            console.log(txtMsg);
+                            if (txtMsg == "success") {
+                                window.location = "ConfirmPage.aspx?ID=" + $("#hfID").val();
+                            }
+                            if (txtMsg == "noAnswer") {
+                                alert("請作答");
+                            }
+                        },
+                        error: function (msg) {
+                            console.log(msg);
+                            alert("通訊失敗，請聯絡管理員。");
+                        }
+                    });
+
+                }
             });
         })
 

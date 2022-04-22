@@ -134,16 +134,7 @@ namespace QuerySystem.Managers
 
             return list.Skip(skip).Take(pageSize).ToList();
 
-        }
-        public List<T> GetIndexList(int pageIndex, int pageSize, List<T> list)
-        {
-            int skip = pageSize * (pageIndex - 1);  //計算跳頁數
-            if (skip < 0)
-                skip = 0;
-
-            return list.Skip(skip).Take(pageSize).ToList();
-
-        }
+        }       
         public void CreateQuestionnaire(QuestionnaireModel questionnaire)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -298,7 +289,7 @@ namespace QuerySystem.Managers
                 QueryName = reader["QueryName"] as string,
                 QueryContent = reader["QueryContent"] as string,
                 CreateTime = (DateTime)reader["CreateTime"],
-                StartTime = Convert.ToDateTime(reader["StartTime"]),
+                StartTime = (DateTime)reader["StartTime"],
                 EndTime = (DateTime)reader["EndTime"]
             };
         }
@@ -796,8 +787,5 @@ namespace QuerySystem.Managers
         }
 
     }
-    public interface T
-    {
-
-    }
+    
 }
