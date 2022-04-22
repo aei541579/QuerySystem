@@ -64,12 +64,12 @@
     <script>
         $(document).ready(function () {
             $("input[id=btnSubmit]").click(function () {
-                var inputCorrext = false;
+                var inputCorrect = false;
                 var Neclist = $(".Necessary").get();
                 for (var necItem of Neclist) {
                     if (necItem.tagName == 'INPUT') {
                         if (necItem.value == "") {
-                            inputCorrext = false;
+                            inputCorrect = false;
                             alert("尚未作答完畢");
                             return;
                         }
@@ -84,16 +84,16 @@
                             }
                         }
                         if (SChecked.length == 0) {
-                            inputCorrext = false;
+                            inputCorrect = false;
                             alert("尚未作答完畢");
                             return;
                         }
                     }
                 }
-                inputCorrext = true;
+                inputCorrect = true;
 
 
-                if (inputCorrext) {
+                if (inputCorrect) {
                     var answer = "";
                     var QList = $("input[id*=Q]").get();
                     for (var item of QList) {

@@ -40,15 +40,10 @@ namespace QuerySystem
                 foreach (QuestionModel question in questionList)
                 {
                     string qText = $"<br/>{question.QuestionNo}. {question.QuestionVal}";
-                    string qId = "ltlQ" + question.QuestionNo;
                     if (question.Necessary)
-                    {
                         qText += "(*必填)";
-                        qId += "Necessary";
-                    }
                     Literal ltlQuestion = new Literal();
                     ltlQuestion.Text = qText + "<br/>";
-                    ltlQuestion.ID = qId;
                     this.plcDynamic.Controls.Add(ltlQuestion);
 
                     switch (question.Type)
@@ -156,6 +151,7 @@ namespace QuerySystem
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.RemoveAll();
             Response.Redirect("List.aspx");
         }
 
