@@ -43,6 +43,7 @@ namespace QuerySystem.SystemAdmin
             this.txtContent.Text = questionnaire.QueryContent;
             this.txtStartTime.Text = questionnaire.StartTime.ToString("yyyy-MM-dd");
             this.txtEndTime.Text = questionnaire.EndTime.ToString("yyyy-MM-dd");
+            this.ckbActive.Checked = (questionnaire.IsActive == ActiveType.開放);
         }
         private void initCreateMode()
         {
@@ -69,7 +70,8 @@ namespace QuerySystem.SystemAdmin
                 QueryName = this.txtTitle.Text.Trim(),
                 QueryContent = this.txtContent.Text.Trim(),
                 StartTime = Convert.ToDateTime(this.txtStartTime.Text),
-                EndTime = Convert.ToDateTime(this.txtEndTime.Text)
+                EndTime = Convert.ToDateTime(this.txtEndTime.Text),
+                IsActive = this.ckbActive.Checked ? ActiveType.開放 : ActiveType.已關閉
             };
 
             if (isCreateMode)

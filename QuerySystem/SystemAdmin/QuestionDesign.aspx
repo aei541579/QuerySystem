@@ -29,7 +29,7 @@
         <tr>
             <td></td>
             <td>
-                <asp:CheckBox ID="CheckBox1" runat="server" Text="已啟用" Checked="true" />
+                <asp:CheckBox ID="ckbActive" runat="server" Text="已啟用" Checked="true" />
                 <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
                 <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
             </td>

@@ -69,7 +69,7 @@ namespace QuerySystem.Managers
                         while (reader.Read())
                         {
                             QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
+                            //questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
                             questionnaireList.Add(questionnaire);
                         }
                         return questionnaireList;
@@ -109,7 +109,7 @@ namespace QuerySystem.Managers
                         while (reader.Read())
                         {
                             QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
+                            //questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
                             questionnaireList.Add(questionnaire);
                         }
                         return questionnaireList;
@@ -140,9 +140,9 @@ namespace QuerySystem.Managers
             string connStr = ConfigHelper.GetConnectionString();
             string commandText =
                 $@"  INSERT INTO [Questionnaires]
-                        (ID, QueryName, QueryContent, StartTime, EndTime, IsExample)
+                        (ID, QueryName, QueryContent, StartTime, EndTime, IsExample, IsActive)
                      VALUES 
-                        (@ID, @QueryName, @QueryContent, @StartTime, @EndTime, @IsExample) ";
+                        (@ID, @QueryName, @QueryContent, @StartTime, @EndTime, @IsExample, @IsActive) ";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connStr))
@@ -157,6 +157,7 @@ namespace QuerySystem.Managers
                         command.Parameters.AddWithValue("@StartTime", questionnaire.StartTime);
                         command.Parameters.AddWithValue("@EndTime", questionnaire.EndTime);
                         command.Parameters.AddWithValue("@IsExample", 0);
+                        command.Parameters.AddWithValue("@IsActive", questionnaire.IsActive);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -175,7 +176,8 @@ namespace QuerySystem.Managers
                      SET QueryName = @QueryName,
                          QueryContent = @QueryContent,
                          StartTime = @StartTime,
-                         EndTime = @EndTime
+                         EndTime = @EndTime,
+                         IsActive = @IsActive
                      WHERE ID = @ID ";
             try
             {
@@ -190,6 +192,7 @@ namespace QuerySystem.Managers
                         command.Parameters.AddWithValue("@QueryContent", questionnaire.QueryContent);
                         command.Parameters.AddWithValue("@StartTime", questionnaire.StartTime);
                         command.Parameters.AddWithValue("@EndTime", questionnaire.EndTime);
+                        command.Parameters.AddWithValue("@IsActive", questionnaire.IsActive);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -290,7 +293,8 @@ namespace QuerySystem.Managers
                 QueryContent = reader["QueryContent"] as string,
                 CreateTime = (DateTime)reader["CreateTime"],
                 StartTime = (DateTime)reader["StartTime"],
-                EndTime = (DateTime)reader["EndTime"]
+                EndTime = (DateTime)reader["EndTime"],
+                IsActive = (bool)reader["IsActive"] ? ActiveType.開放 : ActiveType.已關閉
             };
         }
 
@@ -786,6 +790,19 @@ namespace QuerySystem.Managers
             }
         }
 
+        //public List<T> GetIndexList(int pageIndex, int pageSize, List<T> list)
+        //{
+        //    int skip = pageSize * (pageIndex - 1);  //計算跳頁數
+        //    if (skip < 0)
+        //        skip = 0;
+
+        //    return list.Skip(skip).Take(pageSize).ToList();
+
+        //}
+
     }
-    
+    //public interface IEnumerable<T> : System.Collections.IEnumerable
+    //{ }
+
+
 }

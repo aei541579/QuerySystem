@@ -79,7 +79,7 @@
                                             <asp:Label ID="lblQueryName" runat="server" Text='<%#Eval("QueryName") %>'></asp:Label></a>
                                     </td>
                                     <td>
-                                        <asp:Label ID="lblState" runat="server" Text='<%#Eval("State") %>'></asp:Label>
+                                        <asp:Label ID="lblState" runat="server" Text='<%#Eval("IsActive") %>'></asp:Label>
                                     </td>
                                     <td>
                                         <asp:Label ID="lblStartTime" runat="server" Text='<%#Eval("StartTime")%>'></asp:Label>
