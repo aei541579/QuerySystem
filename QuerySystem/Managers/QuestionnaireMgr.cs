@@ -69,7 +69,12 @@ namespace QuerySystem.Managers
                         while (reader.Read())
                         {
                             QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            //questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
+                            if (questionnaire.StartTime > DateTime.Now)
+                                questionnaire.State = StateType.尚未開放;
+                            else if (questionnaire.EndTime < DateTime.Now)
+                                questionnaire.State = StateType.已結束;
+                            else
+                                questionnaire.State = StateType.投票中;
                             questionnaireList.Add(questionnaire);
                         }
                         return questionnaireList;
@@ -109,7 +114,12 @@ namespace QuerySystem.Managers
                         while (reader.Read())
                         {
                             QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            //questionnaire.State = (questionnaire.EndTime < DateTime.Now) ? StateType.已關閉 : StateType.開放;
+                            if (questionnaire.StartTime > DateTime.Now)
+                                questionnaire.State = StateType.尚未開放;
+                            else if (questionnaire.EndTime < DateTime.Now)
+                                questionnaire.State = StateType.已結束;
+                            else
+                                questionnaire.State = StateType.投票中;
                             questionnaireList.Add(questionnaire);
                         }
                         return questionnaireList;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace QuerySystem
@@ -34,8 +35,8 @@ namespace QuerySystem
             string end = this.Request.QueryString["end"];
             List<QuestionnaireModel> dataList =
                 string.IsNullOrWhiteSpace(keyword)
-                ? _mgr.GetQuestionnaireList()
-                : _mgr.GetQuestionnaireList(keyword);
+                ? _mgr.GetQuestionnaireList().FindAll(x => x.IsActive == ActiveType.開放)
+                : _mgr.GetQuestionnaireList(keyword).FindAll(x => x.IsActive == ActiveType.開放);
             this.txtTitle.Text = keyword;
             if (DateTime.TryParse(start, out DateTime startTime))
                 this.txtStartTime.Text = startTime.ToString("yyyy-MM-dd");
@@ -70,6 +71,14 @@ namespace QuerySystem
                 Label lblNumber = item.FindControl("lblNumber") as Label;
                 lblNumber.Text = i.ToString();
                 i--;
+                HiddenField hfID = item.FindControl("hfID") as HiddenField;
+                HtmlAnchor aQueLink = item.FindControl("aQueLink") as HtmlAnchor;
+                Label lblState = item.FindControl("lblState") as Label;
+                if (lblState.Text != "投票中")
+                    aQueLink.HRef = "";
+                else
+                    aQueLink.HRef = "From.aspx?ID=" + hfID.Value;
+
             }
         }
 

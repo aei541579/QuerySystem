@@ -52,14 +52,15 @@
                         </tr>
                         <asp:Repeater ID="rptTable" runat="server">
                             <ItemTemplate>
-                                <asp:HiddenField ID="hfState" runat="server" Value='<%#Eval("State") %>' />
+                                <asp:HiddenField ID="hfID" runat="server" Value='<%#Eval("QuestionnaireID") %>' />
                                 <tr>
                                     <td>
                                         <asp:Label ID="lblNumber" runat="server"></asp:Label>
                                     </td>
                                     <td>
-                                        <a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>">
-                                            <asp:Label ID="lblQueryName" runat="server" Text='<%#Eval("QueryName") %>'></asp:Label></a>
+                                        <a id="aQueLink" href="#" runat="server">
+                                            <%#Eval("QueryName") %>
+                                        </a>
                                     </td>
                                     <td>
                                         <asp:Label ID="lblState" runat="server" Text='<%#Eval("State") %>'></asp:Label>
