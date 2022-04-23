@@ -77,7 +77,7 @@ namespace QuerySystem
                 if (lblState.Text != "投票中")
                     aQueLink.HRef = "";
                 else
-                    aQueLink.HRef = "From.aspx?ID=" + hfID.Value;
+                    aQueLink.HRef = "Form.aspx?ID=" + hfID.Value;
 
             }
         }
