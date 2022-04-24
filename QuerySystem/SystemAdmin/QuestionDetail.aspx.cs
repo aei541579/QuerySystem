@@ -270,6 +270,7 @@ namespace QuerySystem.SystemAdmin
                 LinkButton lkbEdit = item.FindControl("lkbEdit") as LinkButton;
                 lkbEdit.Enabled = false;
             }
+            this.divBtn.Visible = false;
         }
     }
 }

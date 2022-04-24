@@ -76,9 +76,11 @@
             </ItemTemplate>
         </asp:Repeater>
     </table>
-    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
-    <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
-
+    <div style="text-align: end;" runat="server" id="divBtn">
+        <%--<asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" class="btn btn-secondary" />--%>
+        <input type="button" id="btnCancel" value="取消" class="btn btn-secondary" />
+        <asp:Button ID="btnSubmit" runat="server" Text="確認送出" OnClick="btnSubmit_Click" class="btn btn-primary" />
+    </div>
     <script>
         $(document).ready(function () {
             $("#Qdetail").addClass("active");
@@ -98,6 +100,12 @@
             ckbDdl.click(function () {
                 txt.removeAttr("disabled", "disable");
             })
+
+            $("input[id=btnCancel]").click(function () {
+                if (confirm("確定要取消編輯?")) {
+                    window.location = "List.aspx";
+                }
+            });
         })
 
     </script>
