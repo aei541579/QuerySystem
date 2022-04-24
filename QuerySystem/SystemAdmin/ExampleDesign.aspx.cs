@@ -171,6 +171,13 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (_questionSession.Count == 0)
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**請至少建立一道題目**";
+                return;
+            }
+
             //若session有example，代表為新增狀態
             if (_exampleModel != null)
                 _mgr.CreateExample(_exampleModel.QuestionnaireID, _exampleModel.QueryName);

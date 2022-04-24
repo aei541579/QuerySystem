@@ -183,6 +183,13 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if(_questionSession.Count == 0)
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**請至少建立一道題目**";
+                return;
+            }
+
             //若session有值，代表為新增狀態
             QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireModel"] as QuestionnaireModel;
             if (questionnaire != null)
