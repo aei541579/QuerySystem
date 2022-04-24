@@ -62,60 +62,57 @@ namespace QuerySystem
         private void CreateRdb(QuestionModel question)
         {
             AnswerModel rdb = _answerList.Find(x => x.QuestionNo == question.QuestionNo);
-            RadioButtonList radioButtonList = new RadioButtonList();
-            radioButtonList.ID = "Q" + question.QuestionNo;
-            radioButtonList.Enabled = false;
-            this.plcDynamic.Controls.Add(radioButtonList);
-            string[] arrQue = question.Selection.Split(';');
-            for (int i = 0; i < arrQue.Length; i++)
+            if (rdb != null)
             {
-                ListItem item = new ListItem(arrQue[i], i.ToString());
-                if (rdb != null && rdb.Answer == i.ToString())
-                    item.Selected = true;
-                radioButtonList.Items.Add(item);
+                RadioButtonList radioButtonList = new RadioButtonList();
+                radioButtonList.ID = "Q" + question.QuestionNo;
+                radioButtonList.Enabled = false;
+                this.plcDynamic.Controls.Add(radioButtonList);
+                string[] arrQue = question.Selection.Split(';');
+                for (int i = 0; i < arrQue.Length; i++)
+                {
+                    if (rdb != null && rdb.Answer == i.ToString())
+                    {
+                        ListItem item = new ListItem(arrQue[i], i.ToString());
+                        item.Selected = true;
+                        radioButtonList.Items.Add(item);
+                    }
+                }
             }
         }
         private void CreateCkb(QuestionModel question)
         {
             List<AnswerModel> ckbList = _answerList.FindAll(x => x.QuestionNo == question.QuestionNo);
-            CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + question.QuestionNo;
-            checkBoxList.Enabled = false;
-            this.plcDynamic.Controls.Add(checkBoxList);
-            string[] arrQue = question.Selection.Split(';');
-            for (int i = 0; i < arrQue.Length; i++)
+            if (ckbList != null)
             {
-                ListItem item = new ListItem(arrQue[i], i.ToString());
-                if (ckbList != null && ckbList.Exists(x => x.Answer == i.ToString()))
-                    item.Selected = true;
-                checkBoxList.Items.Add(item);
+                CheckBoxList checkBoxList = new CheckBoxList();
+                checkBoxList.ID = "Q" + question.QuestionNo;
+                checkBoxList.Enabled = false;
+                this.plcDynamic.Controls.Add(checkBoxList);
+                string[] arrQue = question.Selection.Split(';');
+                for (int i = 0; i < arrQue.Length; i++)
+                {
+                    if (ckbList != null && ckbList.Exists(x => x.Answer == i.ToString()))
+                    {
+                        ListItem item = new ListItem(arrQue[i], i.ToString());
+                        item.Selected = true;
+                        checkBoxList.Items.Add(item);
+                    }
+                }
             }
         }
         private void CreateTxt(QuestionModel question)
         {
             AnswerModel txt = _answerList.Find(x => x.QuestionNo == question.QuestionNo);
-            TextBox textBox = new TextBox();
-            textBox.ID = "Q" + question.QuestionNo;
-            textBox.Enabled = false;
             if (txt != null)
-                textBox.Text = txt.Answer;
-            this.plcDynamic.Controls.Add(textBox);
-        }
-
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Form.aspx?ID=" + _questionnaireID);
-        }
-
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            _mgr.CreatePerson(_person);
-            foreach (AnswerModel answer in _answerList)
             {
-                _mgr.CreateAnswer(answer);
+                TextBox textBox = new TextBox();
+                textBox.ID = "Q" + question.QuestionNo;
+                textBox.Enabled = false;
+                textBox.Text = txt.Answer;
+                this.plcDynamic.Controls.Add(textBox);
             }
-            HttpContext.Current.Session.RemoveAll();
-            Response.Redirect("Stastic.aspx?ID=" + _questionnaireID);
         }
+
     }
 }

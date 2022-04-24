@@ -16,12 +16,13 @@ namespace QuerySystem.API
         public void ProcessRequest(HttpContext context)
         {
             if (string.Compare("POST", context.Request.HttpMethod, true) == 0 &&
-                Guid.TryParse(context.Request.QueryString["ID"], out Guid questionnaireID))
+                Guid.TryParse(context.Request.QueryString["ID"], out Guid questionnaireID) &&
+                string.Compare("Confirm", context.Request.QueryString["Action"], true) == 0)
             {
                 string profileString = context.Request.Form["Profile"];
                 string[] proArr = profileString.Split(';');
                 //判斷基本資料填寫格式
-                if(!int.TryParse(proArr[1],out int phone) || !proArr[2].Contains('@') || !int.TryParse(proArr[3], out int age))
+                if (!int.TryParse(proArr[1], out int phone) || !proArr[2].Contains('@') || !int.TryParse(proArr[3], out int age))
                 {
                     context.Response.ContentType = "text/plain";
                     context.Response.Write("errorInput");
@@ -59,7 +60,7 @@ namespace QuerySystem.API
                     AnswerModel answer = new AnswerModel();
                     answer.PersonID = person.PersonID;
                     answer.QuestionnaireID = questionnaireID;
-                    answer.QuestionNo = Convert.ToInt32(ans[0].Replace('Q', '0'));                    
+                    answer.QuestionNo = Convert.ToInt32(ans[0].Replace('Q', '0'));
                     answer.Answer = ans[1];
 
                     answerList.Add(answer);
@@ -68,6 +69,24 @@ namespace QuerySystem.API
                 HttpContext.Current.Session["answerModel"] = answerList;
                 context.Response.ContentType = "text/plain";
                 context.Response.Write("success");
+                return;
+            }
+
+            if (string.Compare("POST", context.Request.HttpMethod, true) == 0 &&
+               string.Compare("Submit", context.Request.QueryString["Action"], true) == 0)
+            {
+                List<AnswerModel> answerList = HttpContext.Current.Session["answerModel"] as List<AnswerModel>;
+                PersonModel person = HttpContext.Current.Session["personModel"] as PersonModel;
+
+                _mgr.CreatePerson(person);
+                foreach (AnswerModel answer in answerList)
+                {
+                    _mgr.CreateAnswer(answer);
+                }
+                HttpContext.Current.Session.RemoveAll();
+                context.Response.ContentType = "text/plain";
+                context.Response.Write("success");
+                return;
             }
 
         }

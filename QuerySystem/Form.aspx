@@ -19,18 +19,17 @@
                 <a href="List.aspx">回列表頁</a>
                 <div class="col-lg-8">
                     <asp:HiddenField ID="hfID" runat="server" />
-                    <h2>
-                        <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
-                    <h4>
-                        <asp:Literal ID="ltlContent" runat="server"></asp:Literal></h4>
+                    <h3>
+                        <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h3>
+                    <h5>
+                        <asp:Literal ID="ltlContent" runat="server"></asp:Literal></h5>
                     <table>
                         <tr>
                             <td>姓名</td>
                             <td>
                                 <asp:TextBox ID="txtName" CssClass="Necessary" runat="server"></asp:TextBox>
                             </td>
-                        </tr>
-                        <tr>
+                            <td>&nbsp;</td>
                             <td>手機</td>
                             <td>
                                 <asp:TextBox ID="txtMobile" CssClass="Necessary" runat="server" TextMode="Phone"></asp:TextBox>
@@ -40,9 +39,8 @@
                             <td>Email</td>
                             <td>
                                 <asp:TextBox ID="txtMail" CssClass="Necessary" runat="server" TextMode="Email"></asp:TextBox>
-                            </td>
-                        </tr>
-                        <tr>
+                            </td>  
+                            <td>&nbsp;</td>
                             <td>年齡</td>
                             <td>
                                 <asp:TextBox ID="txtAge" CssClass="Necessary" runat="server" TextMode="Number"></asp:TextBox>
@@ -51,11 +49,10 @@
                     </table>
 
                     <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
-
                     <br />
-                    <br />
-                    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
-                    <input type="button" id="btnSubmit" value="送出" />
+                    <%--<asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" class="btn btn-secondary"/>--%>
+                    <input type="button" id="btnCancel" value="取消" class="btn btn-secondary" />
+                    <input type="button" id="btnSubmit" value="送出" class="btn btn-primary" />
                 </div>
             </div>
         </div>
@@ -63,6 +60,8 @@
 
     <script>
         $(document).ready(function () {
+            $("input[id*=Q][type=text]").attr('style', 'margin-bottom:25px;');
+
             $("input[id=btnSubmit]").click(function () {
                 var inputCorrect = false;
                 var Neclist = $(".Necessary").get();
@@ -113,7 +112,7 @@
                     };
 
                     $.ajax({
-                        url: "/API/AnswerHandler.ashx?ID=" + $("#hfID").val(),
+                        url: "/API/AnswerHandler.ashx?ID=" + $("#hfID").val() + "&Action=Confirm",
                         method: "POST",
                         data: postData,
                         success: function (txtMsg) {
@@ -136,6 +135,13 @@
 
                 }
             });
+
+            $("input[id=btnCancel]").click(function () {
+                if (confirm("確定要取消作答?")){
+                    window.location = "List.aspx";
+                }
+            });
+
         })
 
     </script>
