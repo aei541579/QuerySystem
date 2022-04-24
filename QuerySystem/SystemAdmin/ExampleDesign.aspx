@@ -96,8 +96,11 @@
                             </ItemTemplate>
                         </asp:Repeater>
                     </table>
-                    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />
-                    <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" />
+                    <div style="text-align:end;">
+                        <input type="button" id="btnCancel" value="取消" class="btn btn-secondary" />
+                        <%--<asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" />--%>
+                        <asp:Button ID="btnSubmit" runat="server" Text="送出" OnClick="btnSubmit_Click" class="btn btn-primary" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,6 +123,30 @@
             ckbDdl.click(function () {
                 txt.removeAttr("disabled", "disable");
             })
+
+            $("input[id=btnCancel]").click(function () {
+                let url = new URLSearchParams(window.location.search);
+                var postData = {
+                    "ID": url.get('ID')
+                };
+                if (confirm("確定要取消編輯?")) {
+                    $.ajax({
+                        url: "/API/CancelHandler.ashx?Type=Question",
+                        method: "POST",
+                        data: postData,
+                        success: function (txtMsg) {
+                            console.log(txtMsg);
+                            if (txtMsg == "success") {
+                                window.location = "ExampleList.aspx";
+                            }
+                        },
+                        error: function (msg) {
+                            console.log(msg);
+                            alert("通訊失敗，請聯絡管理員。");
+                        }
+                    });
+                }
+            });
         })
     </script>
 </body>

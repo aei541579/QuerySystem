@@ -14,9 +14,12 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<QuestionModel> _questionSession;
+        private static QuestionnaireModel _exampleModel;
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
+            _exampleModel = HttpContext.Current.Session["ExampleModel"] as QuestionnaireModel;
+
             //InitRpt(_questionSession);
             if (!IsPostBack)
             {
@@ -24,7 +27,9 @@ namespace QuerySystem.SystemAdmin
                 if (Guid.TryParse(IDstring, out _questionnaireID))
                 {
                     List<QuestionModel> questionList = _mgr.GetQuestionList(_questionnaireID);
-                    this.txtTitle.Text = _mgr.GetExample(_questionnaireID).QueryName;
+                    this.txtTitle.Text = (_exampleModel != null)
+                        ? _exampleModel.QueryName
+                        : _mgr.GetExample(_questionnaireID).QueryName;
                     InitRpt(questionList);
                     HttpContext.Current.Session["qusetionModel"] = questionList;
                 }
@@ -166,9 +171,9 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            //若標題有被修改，則寫入新標題
-            if (string.Compare(_mgr.GetExample(_questionnaireID).QueryName, this.txtTitle.Text.Trim()) != 0)
-                _mgr.UpdateExample(_questionnaireID, this.txtTitle.Text.Trim());
+            //若session有example，代表為新增狀態
+            if (_exampleModel != null)
+                _mgr.CreateExample(_exampleModel.QuestionnaireID, _exampleModel.QueryName);
 
             if (_mgr.GetQuestionList(_questionnaireID) != null)
                 _mgr.DeleteQuestion(_questionnaireID);
@@ -182,6 +187,7 @@ namespace QuerySystem.SystemAdmin
                 questionNo++;
             }
             HttpContext.Current.Session.Remove("qusetionModel");
+            HttpContext.Current.Session.Remove("ExampleModel");
             Response.Redirect("ExampleList.aspx");
         }
 

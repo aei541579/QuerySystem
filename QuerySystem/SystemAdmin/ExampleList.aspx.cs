@@ -17,6 +17,7 @@ namespace QuerySystem.SystemAdmin
         private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Session.RemoveAll();
             string pageIndexText = this.Request.QueryString["Page"];
             _pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
 
@@ -74,9 +75,13 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-            Guid newID = Guid.NewGuid();
-            _mgr.CreateExample(newID, this.txtCreate.Text.Trim());
-            Response.Redirect("ExampleDesign.aspx?ID=" + newID);
+            QuestionnaireModel questionnaire = new QuestionnaireModel()
+            {
+                QuestionnaireID = Guid.NewGuid(),
+                QueryName = this.txtCreate.Text.Trim()
+            };
+            HttpContext.Current.Session["ExampleModel"] = questionnaire;
+            Response.Redirect("ExampleDesign.aspx?ID=" + questionnaire.QuestionnaireID);
         }
     }
 }

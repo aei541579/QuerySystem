@@ -77,7 +77,8 @@ namespace QuerySystem.SystemAdmin
             if (isCreateMode)
             {
                 questionnaire.QuestionnaireID = Guid.NewGuid();
-                _mgr.CreateQuestionnaire(questionnaire);
+                HttpContext.Current.Session["QuestionnaireModel"] = questionnaire;
+                //_mgr.CreateQuestionnaire(questionnaire);
             }
             else
             {

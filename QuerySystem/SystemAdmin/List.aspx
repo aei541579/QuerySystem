@@ -51,6 +51,7 @@
                             </td>
                         </tr>
                     </table>
+                    <asp:Button ID="btnCreate" runat="server" Text="新增問卷" OnClick="btnCreate_Click" class="btn btn-outline-primary" />
 
                     <table class="table table-striped">
                         <tr>
@@ -97,10 +98,14 @@
                     <div>
                         <uc1:ucPager runat="server" ID="ucPager" />
                     </div>
-                    <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
                 </div>
             </div>
         </div>
     </form>
+    <script>
+        $(document).ready(function () {
+            $("input[id*=btnCreate]").attr('style', 'margin-bottom:10px;');
+        });
+    </script>
 </body>
 </html>
