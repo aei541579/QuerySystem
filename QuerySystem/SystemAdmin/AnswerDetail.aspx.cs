@@ -21,6 +21,7 @@ namespace QuerySystem.SystemAdmin
             {
                 PersonModel person = _mgr.GetPerson(_personID);
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(person.QuestionnaireID);
+                this.ansListLink.HRef = "AnswerList.aspx?ID=" + questionnaire.QuestionnaireID.ToString();
                 this.ltlTitle.Text = questionnaire.QueryName;
                 this.ltlContent.Text = questionnaire.QueryContent;
 
