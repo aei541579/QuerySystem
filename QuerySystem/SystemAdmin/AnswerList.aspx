@@ -3,9 +3,10 @@
 <%@ Register Src="~/ShareControls/ucPager.ascx" TagPrefix="uc1" TagName="ucPager" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Button ID="btnExport" runat="server" Text="匯出(.csv)" OnClick="btnExport_Click" />
+    <asp:Button ID="btnExport" runat="server" Text="匯出(.csv)" OnClick="btnExport_Click" class="btn btn-outline-secondary" />
     <table class="table table-striped">
         <tr>
             <th>#</th>
@@ -36,6 +37,8 @@
     <script>
         $(document).ready(function () {
             $("#Alist").addClass("active");
+
+            $("input[id*=btnExport]").attr('style','margin:10px;');
         })
     </script>
 
