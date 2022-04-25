@@ -35,11 +35,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>建立新範本</td>
-                            <td>
+                            <td colspan="2">
+                    <asp:Button ID="btnCreate" runat="server" Text="新增常用問題" OnClick="btnCreate_Click" class="btn btn-outline-primary" />
+                            </td>
+                            <%--<td>
                                 <asp:TextBox ID="txtCreate" runat="server" placeHolder="請輸入欲新增之標題"></asp:TextBox>
                                 <asp:Button ID="btnCreate" runat="server" Text="新增" OnClick="btnCreate_Click" />
-                            </td>
+                            </td>--%>
                         </tr>
                     </table>
 

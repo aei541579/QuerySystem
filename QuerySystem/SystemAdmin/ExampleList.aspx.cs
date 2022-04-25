@@ -75,13 +75,12 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-            QuestionnaireModel questionnaire = new QuestionnaireModel()
-            {
-                QuestionnaireID = Guid.NewGuid(),
-                QueryName = this.txtCreate.Text.Trim()
-            };
-            HttpContext.Current.Session["ExampleModel"] = questionnaire;
-            Response.Redirect("ExampleDesign.aspx?ID=" + questionnaire.QuestionnaireID);
+            //QuestionnaireModel questionnaire = new QuestionnaireModel()
+            //{
+            //    QuestionnaireID = Guid.NewGuid()
+            //};
+            //HttpContext.Current.Session["ExampleModel"] = questionnaire;
+            Response.Redirect("ExampleDesign.aspx?ID=" + Guid.NewGuid());
         }
     }
 }

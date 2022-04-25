@@ -14,11 +14,12 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<QuestionModel> _questionSession;
-        private static QuestionnaireModel _exampleModel;
+        //private static QuestionnaireModel _exampleModel;
+        private static bool _isCreateMode;
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
-            _exampleModel = HttpContext.Current.Session["ExampleModel"] as QuestionnaireModel;
+            //_exampleModel = HttpContext.Current.Session["ExampleModel"] as QuestionnaireModel;
 
             //InitRpt(_questionSession);
             if (!IsPostBack)
@@ -27,9 +28,8 @@ namespace QuerySystem.SystemAdmin
                 if (Guid.TryParse(IDstring, out _questionnaireID))
                 {
                     List<QuestionModel> questionList = _mgr.GetQuestionList(_questionnaireID);
-                    this.txtTitle.Text = (_exampleModel != null)
-                        ? _exampleModel.QueryName
-                        : _mgr.GetExample(_questionnaireID).QueryName;
+                    _isCreateMode = (questionList.Count == 0) ? true : false;
+                    this.txtTitle.Text = _mgr.GetExample(_questionnaireID).QueryName;
                     InitRpt(questionList);
                     HttpContext.Current.Session["qusetionModel"] = questionList;
                 }
@@ -171,6 +171,12 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
+            {
+                this.ltlAlert.Visible = true;
+                this.ltlAlert.Text = "**請輸入常用問題標題**";
+                return;
+            }
             if (_questionSession.Count == 0)
             {
                 this.ltlAlert.Visible = true;
@@ -178,12 +184,14 @@ namespace QuerySystem.SystemAdmin
                 return;
             }
 
-            //若session有example，代表為新增狀態
-            if (_exampleModel != null)
-                _mgr.CreateExample(_exampleModel.QuestionnaireID, _exampleModel.QueryName);
-
-            if (_mgr.GetQuestionList(_questionnaireID) != null)
+            if (_isCreateMode)
+                _mgr.CreateExample(_questionnaireID, this.txtTitle.Text.Trim());
+            else
+            {
+                _mgr.UpdateExample(_questionnaireID, this.txtTitle.Text.Trim());
+                //不是為新增狀態，代表問題資料庫內一定有資料，一併先刪除再新增
                 _mgr.DeleteQuestion(_questionnaireID);
+            }
 
             int questionNo = 1;
             foreach (QuestionModel question in _questionSession)
