@@ -40,6 +40,8 @@ namespace QuerySystem.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnairMgr.GetQuestionnaire", ex);
+                //若有人在querystring輸入不符合條件的guid，則跳轉回列表頁
+                HttpContext.Current.Response.Redirect("List.aspx");
                 throw;
             }
         }
