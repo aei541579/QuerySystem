@@ -42,26 +42,8 @@
             $("#Qdesign").addClass("active");
 
             $("input[id=btnCancel]").click(function () {
-                let url = new URLSearchParams(window.location.search);
-                var postData = {
-                    "ID": url.get('ID')
-                };
                 if (confirm("確定要取消編輯?")) {
-                    $.ajax({
-                        url: "/API/CancelHandler.ashx?Type=Question",
-                        method: "POST",
-                        data: postData,
-                        success: function (txtMsg) {
-                            console.log(txtMsg);
-                            if (txtMsg == "success") {
-                                window.location = "List.aspx";                               
-                            }
-                        },
-                        error: function (msg) {
-                            console.log(msg);
-                            alert("通訊失敗，請聯絡管理員。");
-                        }
-                    });
+                    window.location = "List.aspx";
                 }
             });
         })

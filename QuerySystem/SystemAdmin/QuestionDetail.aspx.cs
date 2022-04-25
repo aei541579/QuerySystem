@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using QuerySystem.Models;
 using QuerySystem.Managers;
-
+using System.Web.UI.HtmlControls;
 
 namespace QuerySystem.SystemAdmin
 {
@@ -15,19 +15,36 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<QuestionModel> _questionSession;
+        private static QuestionnaireModel _questionnaire;
+        private static bool _isCreateMode;
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
-            //InitRpt(_questionSession);
+
+            //若session有值，代表為新增模式
+            _questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
+            _isCreateMode = (_questionnaire != null) ? true : false; 
+
             if (!IsPostBack)
             {
                 string IDstring = Request.QueryString["ID"];
                 if (Guid.TryParse(IDstring, out _questionnaireID))
                 {
-                    List<QuestionModel> questionList = _mgr.GetQuestionList(_questionnaireID);
+                    //若questionSession為null代表 1.剛剛沒有編輯到一半亂跳頁 2.為新增模式 =>從資料庫叫問題(新增模式傳回0筆也沒問題)
+                    List<QuestionModel> questionList = _questionSession == null
+                        ?_mgr.GetQuestionList(_questionnaireID)
+                        :_questionSession;
                     InitRpt(questionList);
                     InitDdl();
                     HttpContext.Current.Session["qusetionModel"] = questionList;
+
+                    if(_isCreateMode)
+                    {
+                        HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
+                        HtmlAnchor linkAstastic = Master.FindControl("Astastic") as HtmlAnchor;
+                        linkAlist.Visible = false;
+                        linkAstastic.Visible = false;
+                    }
 
                     if (_mgr.GetPersonList(_questionnaireID).Count > 0)
                         InitDisabledInput();
@@ -191,9 +208,9 @@ namespace QuerySystem.SystemAdmin
             }
 
             //若session有值，代表為新增狀態
-            QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireModel"] as QuestionnaireModel;
-            if (questionnaire != null)
-                _mgr.CreateQuestionnaire(questionnaire);
+            //QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
+            if (_isCreateMode)
+                _mgr.CreateQuestionnaire(_questionnaire);
 
             //若資料庫已存在問題，一併先刪除舊問題，再寫入更新後問題
             if (_mgr.GetQuestionList(_questionnaireID) != null)
@@ -210,7 +227,7 @@ namespace QuerySystem.SystemAdmin
                 questionNo++;
             }
             HttpContext.Current.Session.Remove("qusetionModel");
-            HttpContext.Current.Session.Remove("QuestionnaireModel");
+            HttpContext.Current.Session.Remove("QuestionnaireSession");
             Response.Redirect("List.aspx");
         }
 

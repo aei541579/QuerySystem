@@ -14,31 +14,35 @@ namespace QuerySystem.SystemAdmin
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
-        private bool isCreateMode;
+        private static bool _isNewQuestionnaire;
         protected void Page_Load(object sender, EventArgs e)
         {
             string IDstring = Request.QueryString["ID"];
             if (string.IsNullOrWhiteSpace(IDstring))
             {
-                isCreateMode = true;
+                _isNewQuestionnaire = true;
                 if (!IsPostBack)
                     initCreateMode();
                 HttpContext.Current.Session.Remove("ID");
             }
             else if (Guid.TryParse(IDstring, out _questionnaireID))
             {
-                isCreateMode = false;
+                //若session有問卷，則問卷仍未寫進資料庫
+                QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
+                _isNewQuestionnaire = questionnaire != null ? true : false;
                 if (!IsPostBack)
-                    initEditMode(_questionnaireID);
+                    initEditMode(questionnaire);
                 HttpContext.Current.Session["ID"] = _questionnaireID;
             }
             else
                 Response.Redirect("List.aspx");
 
         }
-        private void initEditMode(Guid QuestionnaireID)
+        private void initEditMode(QuestionnaireModel questionnaire)
         {
-            QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(QuestionnaireID);
+            questionnaire = _isNewQuestionnaire
+                ? questionnaire
+                : _mgr.GetQuestionnaire(_questionnaireID);  //不為新問卷則從資料庫叫問卷
             this.txtTitle.Text = questionnaire.QueryName;
             this.txtContent.Text = questionnaire.QueryContent;
             this.txtStartTime.Text = questionnaire.StartTime.ToString("yyyy-MM-dd");
@@ -47,13 +51,13 @@ namespace QuerySystem.SystemAdmin
         }
         private void initCreateMode()
         {
+            this.txtStartTime.Text = DateTime.Now.ToString("yyyy-MM-dd");            
             HtmlAnchor linkQdesign = Master.FindControl("Qdetail") as HtmlAnchor;
             HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
             HtmlAnchor linkAstastic = Master.FindControl("Astastic") as HtmlAnchor;
             linkQdesign.Visible = false;
             linkAlist.Visible = false;
             linkAstastic.Visible = false;
-            this.txtStartTime.Text = DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -74,10 +78,10 @@ namespace QuerySystem.SystemAdmin
                 IsActive = this.ckbActive.Checked ? ActiveType.開放 : ActiveType.已關閉
             };
 
-            if (isCreateMode)
+            if (_isNewQuestionnaire)
             {
                 questionnaire.QuestionnaireID = Guid.NewGuid();
-                HttpContext.Current.Session["QuestionnaireModel"] = questionnaire;
+                HttpContext.Current.Session["QuestionnaireSession"] = questionnaire;
                 //_mgr.CreateQuestionnaire(questionnaire);
             }
             else
@@ -95,7 +99,7 @@ namespace QuerySystem.SystemAdmin
                 errorMsg += "**必須輸入問卷標題**<br/>";
             if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
                 errorMsg += "**必須輸入起始日期**<br/>";
-            else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today && isCreateMode)
+            else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today && _isNewQuestionnaire)
                 errorMsg += "**起始日期不可早於今天**<br/>";
             else if (string.IsNullOrWhiteSpace(this.txtEndTime.Text))
                 errorMsg += "**必須輸入結束日期**<br/>";
