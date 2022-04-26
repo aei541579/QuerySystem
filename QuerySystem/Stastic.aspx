@@ -16,9 +16,10 @@
             width: 500px;
             height: 400px;
         }
-        span{
-            font-size:20px;
-        }
+
+        /*div {
+            font-size: 20px;
+        }*/
     </style>
 </head>
 <body>
@@ -49,7 +50,7 @@
                     dataType: "JSON",
                     async: false,
                     success: function (objData) {
-                        createChart(objData, divNo);                        
+                        createChart(objData, divNo);
                     },
                     error: function (msg) {
                         console.log(msg);
@@ -59,16 +60,31 @@
             }
         });
 
-        function createChart(data, thisdiv) {            
+        function createChart(data, thisdiv) {
             var options = {
                 series: {
-                    pie: { show: true }
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 2/3,
+                            formatter: function (label, series) {
+                                return '<div style="font-size:12pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                            },
+                            threshold: 0.1
+                        }
+                    }
                 },
                 legend: {
                     show: false
                 }
             };
-            $.plot($(`div[class=${thisdiv.className}]`), data, options);
+            var parentDiv = $(`div[class=${thisdiv.className}]`);
+            $.plot(parentDiv, data, options);
+            var labelList = parentDiv.find("div").get();
+            console.log(labelList);
+
         }
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

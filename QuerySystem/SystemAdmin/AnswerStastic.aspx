@@ -39,7 +39,18 @@
         function createChart(data, divNo) {
             var options = {
                 series: {
-                    pie: { show: true }
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 2 / 3,
+                            formatter: function (label, series) {
+                                return '<div style="font-size:12pt;text-align:center;padding:2px;color:black;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                            },
+                            threshold: 0.1
+                        }
+                    }
                 },
                 legend: {
                     show: false
