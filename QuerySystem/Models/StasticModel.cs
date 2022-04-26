@@ -5,6 +5,9 @@ using System.Web;
 
 namespace QuerySystem.Models
 {
+    /// <summary>
+    /// 題號/答案/答案數量
+    /// </summary>
     public class StasticModel
     {
         public int QuestionNo { get; set; }

@@ -56,25 +56,14 @@ namespace QuerySystem
                         }
                         else
                         {
-                            string[] arrQue = question.Selection.Split(';');
-                            for (int i = 0; i < arrQue.Length; i++)
-                            {
-                                int ansCount = 0;
-                                StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
-                                if (stastic != null)
-                                    ansCount = stastic.AnsCount;
-
-                                Literal ltlSelection = new Literal();
-                                ltlSelection.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount})";
-                                this.plcDynamic.Controls.Add(ltlSelection);
-
-                                HtmlGenericControl outterDiv = new HtmlGenericControl("div");
-                                outterDiv.Style.Value = "width:100%;height:20px;border:1px solid black;";
-                                this.plcDynamic.Controls.Add(outterDiv);
-                                HtmlGenericControl innerDiv = new HtmlGenericControl("div");
-                                innerDiv.Style.Value = $"width:{ansCount * 100 / total}%;height:20px;background-color:gray;color:white;font-weight:bold;";
-                                outterDiv.Controls.Add(innerDiv);
-                            }
+                            HtmlGenericControl legendPlaceholder = new HtmlGenericControl("div");
+                            legendPlaceholder.ID = "legendPlaceholder";
+                            HtmlGenericControl flotcontainer = new HtmlGenericControl("div");
+                            flotcontainer.ID = "flotcontainer";
+                            flotcontainer.Attributes.Add("class",question.QuestionNo.ToString());
+                            
+                            this.plcDynamic.Controls.Add(legendPlaceholder);
+                            this.plcDynamic.Controls.Add(flotcontainer);
                         }
                     }
                     else

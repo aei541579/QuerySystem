@@ -44,6 +44,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -95,6 +98,9 @@
     </Compile>
     <Compile Include="API\CancelHandler.ashx.cs">
       <DependentUpon>CancelHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\StasticHandler.ashx.cs">
+      <DependentUpon>StasticHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="ConfirmPage.aspx.cs">
       <DependentUpon>ConfirmPage.aspx</DependentUpon>
@@ -224,6 +230,7 @@
   <ItemGroup>
     <Content Include="API\AnswerHandler.ashx" />
     <Content Include="API\CancelHandler.ashx" />
+    <Content Include="API\StasticHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="SystemAdmin\SystemAdmin.Master" />
     <None Include="Web.Debug.config">

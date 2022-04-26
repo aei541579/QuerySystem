@@ -147,8 +147,14 @@
                     });
                 }
             });
+
         });
 
+        if (window.history.replaceState) {
+            //if (confirm("您確定要重整?這可能會遺失目前資料")) {
+                window.history.replaceState(null, null, window.location.href);
+            //}
+        }
 
     </script>
 </body>

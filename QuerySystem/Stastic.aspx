@@ -10,21 +10,70 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <uc1:ucJSScript runat="server" ID="ucJSScript" />
+
+    <style>
+        #flotcontainer {
+            width: 500px;
+            height: 400px;
+        }
+        span{
+            font-size:20px;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="container">
             <div class="row">
-                <a href="List.aspx">回列表頁</a>
                 <div class="col-lg-8">
-                    <h2>
-                        <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
-                    <h4>
-                        <asp:Literal ID="ltlContent" runat="server"></asp:Literal></h4>
+                    <h3>
+                        <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h3>
+                    <h5>
+                        <asp:Literal ID="ltlContent" runat="server"></asp:Literal></h5>
                     <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
+                    <%--<div id="legendPlaceholder"></div>
+                    <div id="flotcontainer"></div>--%>
                 </div>
+                <a href="List.aspx">回列表頁</a>
             </div>
         </div>
     </form>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let url = new URLSearchParams(window.location.search);
+            var divList = $("div[id=flotcontainer]").get()
+            for (var divNo of divList) {
+                $.ajax({
+                    url: `/API/StasticHandler.ashx?ID=${url.get('ID')}&que=${divNo.className}`,
+                    method: "GET",
+                    dataType: "JSON",
+                    async: false,
+                    success: function (objData) {
+                        createChart(objData, divNo);                        
+                    },
+                    error: function (msg) {
+                        console.log(msg);
+                        alert("通訊失敗，請聯絡管理員");
+                    }
+                });
+            }
+        });
+
+        function createChart(data, thisdiv) {            
+            var options = {
+                series: {
+                    pie: { show: true }
+                },
+                legend: {
+                    show: false
+                }
+            };
+            $.plot($(`div[class=${thisdiv.className}]`), data, options);
+        }
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://static.pureexample.com/js/flot/excanvas.min.js"></script>
+    <script src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
+    <script src="http://static.pureexample.com/js/flot/jquery.flot.pie.min.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using QuerySystem.Managers;
 using QuerySystem.Models;
@@ -39,28 +40,22 @@ namespace QuerySystem.SystemAdmin
 
                         Literal ltlSelection = new Literal();
                         if (total == 0)
-                            ltlSelection.Text = "尚無資料<br/>";
+                        {
+                            Literal ltlNoAns = new Literal();
+                            ltlNoAns.Text = "尚無資料<br/>";
+                            this.plcDynamic.Controls.Add(ltlNoAns);
+                        }
                         else
                         {
-                            string selection = "<table>";
-                            string[] arrQue = question.Selection.Split(';');
-                            for (int i = 0; i < arrQue.Length; i++)
-                            {
-                                int ansCount = 0;
-                                StasticModel stastic = NoList.Find(x => x.Answer == i.ToString());
-                                if (stastic != null)
-                                    ansCount = stastic.AnsCount;
-                                selection +=
-                                    $@"<tr>
-                                     <td>{arrQue[i]}</td>
-                                     <td>{ansCount * 100 / total}%</td>
-                                     <td>({ansCount})</td>
-                                 </tr>";
-                            }
-                            selection += "</table>";
-                            ltlSelection.Text = selection;
+                            HtmlGenericControl legendPlaceholder = new HtmlGenericControl("div");
+                            legendPlaceholder.ID = "legendPlaceholder";
+                            HtmlGenericControl flotcontainer = new HtmlGenericControl("div");
+                            flotcontainer.ID = "flotcontainer";
+                            flotcontainer.Attributes.Add("class", question.QuestionNo.ToString());
+
+                            this.plcDynamic.Controls.Add(legendPlaceholder);
+                            this.plcDynamic.Controls.Add(flotcontainer);
                         }
-                        this.plcDynamic.Controls.Add(ltlSelection);
                     }
                     else
                     {
