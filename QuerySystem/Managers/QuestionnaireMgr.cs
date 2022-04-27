@@ -10,6 +10,12 @@ namespace QuerySystem.Managers
 {
     public class QuestionnaireMgr
     {
+        #region questionniare問卷相關
+        /// <summary>
+        /// 取得該問卷model
+        /// </summary>
+        /// <param name="QuestionnaireID"></param>
+        /// <returns></returns>
         public QuestionnaireModel GetQuestionnaire(Guid QuestionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -147,6 +153,10 @@ namespace QuerySystem.Managers
             return list.Skip(skip).Take(pageSize).ToList();
 
         }       
+        /// <summary>
+        /// 新增問卷
+        /// </summary>
+        /// <param name="questionnaire"></param>
         public void CreateQuestionnaire(QuestionnaireModel questionnaire)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -180,6 +190,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 更新問卷
+        /// </summary>
+        /// <param name="questionnaire"></param>
         public void UpdateQuestionnaire(QuestionnaireModel questionnaire)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -215,6 +229,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 刪除問卷
+        /// </summary>
+        /// <param name="questionnaireID"></param>
         public void DeleteQuestionnaire(Guid questionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -242,6 +260,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 刪除此問卷的所有問題
+        /// </summary>
+        /// <param name="questionnaireID"></param>
         public void DeleteQuestion(Guid questionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -268,6 +290,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 刪除此問卷的所有回答
+        /// </summary>
+        /// <param name="questionnaireID"></param>
         public void DeleteAnswer(Guid questionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -294,8 +320,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-
-
+        /// <summary>
+        /// 建立SQL讀取資料後的回傳的問卷model
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private QuestionnaireModel BuildQuestionnaire(SqlDataReader reader)
         {
             return new QuestionnaireModel()
@@ -309,7 +338,14 @@ namespace QuerySystem.Managers
                 IsActive = (bool)reader["IsActive"] ? ActiveType.開放 : ActiveType.已關閉
             };
         }
+        #endregion
 
+        #region question問題相關
+        /// <summary>
+        /// 取得該問卷的所有問題清單
+        /// </summary>
+        /// <param name="QuestionnaireID"></param>
+        /// <returns></returns>
         public List<QuestionModel> GetQuestionList(Guid QuestionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -345,6 +381,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 建立問題
+        /// </summary>
+        /// <param name="question"></param>
         public void CreateQuestion(QuestionModel question)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -381,7 +421,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-
+        /// <summary>
+        /// 建立SQL讀取資料後的回傳的問題model
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private QuestionModel BuildQuestionModel(SqlDataReader reader)
         {
             return new QuestionModel()
@@ -396,7 +440,13 @@ namespace QuerySystem.Managers
 
             };
         }
+        #endregion
 
+        #region answer/person 回答相關
+        /// <summary>
+        /// 建立作答者
+        /// </summary>
+        /// <param name="person"></param>
         public void CreatePerson(PersonModel person)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -431,6 +481,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 建立回答
+        /// </summary>
+        /// <param name="answer"></param>
         public void CreateAnswer(AnswerModel answer)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -463,6 +517,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 取得該問卷的所有作答者清單
+        /// </summary>
+        /// <param name="QuestionnaireID"></param>
+        /// <returns></returns>
         public List<PersonModel> GetPersonList(Guid QuestionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -498,7 +557,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-
+        /// <summary>
+        /// 取得該作答者的基本資料
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <returns></returns>
         public PersonModel GetPerson(Guid personID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -533,6 +596,11 @@ namespace QuerySystem.Managers
             }
 
         }
+        /// <summary>
+        /// 建立SQL讀取資料後的回傳的作答者model
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private PersonModel BuildPersonModel(SqlDataReader reader)
         {
             return new PersonModel()
@@ -546,7 +614,11 @@ namespace QuerySystem.Managers
                 QuestionnaireID = (Guid)reader["QuestionnaireID"]
             };
         }
-
+        /// <summary>
+        /// 取得該作答者的回答清單
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <returns></returns>
         public List<AnswerModel> GetAnswerList(Guid personID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -587,7 +659,14 @@ namespace QuerySystem.Managers
             }
 
         }
+        #endregion
 
+        #region stastic統計相關
+        /// <summary>
+        /// 取得該問卷的統計清單
+        /// </summary>
+        /// <param name="QuestionnaireID"></param>
+        /// <returns></returns>
         public List<StasticModel> GetStasticList(Guid QuestionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -630,7 +709,14 @@ namespace QuerySystem.Managers
             }
 
         }
+        #endregion
 
+        #region example常用問題相關
+        /// <summary>
+        /// 建立常用問題
+        /// </summary>
+        /// <param name="questionnaireID"></param>
+        /// <param name="queryName"></param>
         public void CreateExample(Guid questionnaireID, string queryName)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -660,6 +746,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 更新常用問題
+        /// </summary>
+        /// <param name="questionnaireID"></param>
+        /// <param name="queryName"></param>
         public void UpdateExample(Guid questionnaireID, string queryName)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -687,7 +778,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-
+        /// <summary>
+        /// 取得該常用問題的問卷model(僅有ID/標題/建立時間 3個欄位)
+        /// </summary>
+        /// <param name="QuestionnaireID"></param>
+        /// <returns></returns>
         public QuestionnaireModel GetExample(Guid QuestionnaireID)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -723,6 +818,10 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 取得所有常用問題清單
+        /// </summary>
+        /// <returns></returns>
         public List<QuestionnaireModel> GetExampleList()
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -762,6 +861,11 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
+        /// <summary>
+        /// 取得常用問題搜尋後清單
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
         public List<QuestionnaireModel> GetExampleList(string keyword)
         {
             string connStr = ConfigHelper.GetConnectionString();
@@ -801,20 +905,8 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-
-        //public List<T> GetIndexList(int pageIndex, int pageSize, List<T> list)
-        //{
-        //    int skip = pageSize * (pageIndex - 1);  //計算跳頁數
-        //    if (skip < 0)
-        //        skip = 0;
-
-        //    return list.Skip(skip).Take(pageSize).ToList();
-
-        //}
+        #endregion
 
     }
-    //public interface IEnumerable<T> : System.Collections.IEnumerable
-    //{ }
-
-
+    
 }

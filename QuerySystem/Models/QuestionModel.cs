@@ -5,6 +5,10 @@ using System.Web;
 
 namespace QuerySystem.Models
 {
+    /// <summary>
+    /// *問題型別*
+    /// questionID/questionnaireID/題目種類/題號/問題內容/回答選項/必填
+    /// </summary>
     public class QuestionModel
     {
         public Guid QuestionID { get; set; }
@@ -16,6 +20,9 @@ namespace QuerySystem.Models
         public bool Necessary { get; set; }
         
     }
+    // <summary>
+    /// 單選/複選/文字
+    /// </summary>
     public enum QuestionType
     {
         單選方塊 = 0,

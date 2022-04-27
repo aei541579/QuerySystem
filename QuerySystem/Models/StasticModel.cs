@@ -6,6 +6,7 @@ using System.Web;
 namespace QuerySystem.Models
 {
     /// <summary>
+    /// *統計型別*
     /// 題號/答案/答案數量
     /// </summary>
     public class StasticModel

@@ -82,9 +82,6 @@
             };
             var parentDiv = $(`div[class=${thisdiv.className}]`);
             $.plot(parentDiv, data, options);
-            var labelList = parentDiv.find("div").get();
-            console.log(labelList);
-
         }
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
