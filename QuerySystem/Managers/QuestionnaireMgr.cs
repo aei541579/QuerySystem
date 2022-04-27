@@ -851,11 +851,6 @@ namespace QuerySystem.Managers
                 throw;
             }
         }
-        /// <summary>
-        /// 取得常用問題搜尋後清單
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         #endregion
 
     }
