@@ -93,6 +93,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\AddQuestionHandler.ashx.cs">
+      <DependentUpon>AddQuestionHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="API\AnswerHandler.ashx.cs">
       <DependentUpon>AnswerHandler.ashx</DependentUpon>
     </Compile>
@@ -231,6 +234,7 @@
     <Content Include="API\AnswerHandler.ashx" />
     <Content Include="API\CancelHandler.ashx" />
     <Content Include="API\StasticHandler.ashx" />
+    <Content Include="API\AddQuestionHandler.ashx" />
     <None Include="packages.config" />
     <Content Include="SystemAdmin\SystemAdmin.Master" />
     <None Include="Web.Debug.config">

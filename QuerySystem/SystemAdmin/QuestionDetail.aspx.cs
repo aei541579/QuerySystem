@@ -24,10 +24,10 @@ namespace QuerySystem.SystemAdmin
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
-
+            
             //若session有值，代表為新增模式
             _questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
-            _isCreateMode = (_questionnaire != null) ? true : false; 
+            _isCreateMode = (_questionnaire != null) ? true : false;
 
             if (!IsPostBack)
             {
@@ -36,13 +36,14 @@ namespace QuerySystem.SystemAdmin
                 {
                     //若questionSession為null代表 1.剛剛沒有編輯到一半亂跳頁 2.為新增模式 =>從資料庫叫問題(新增模式傳回0筆也沒問題)
                     List<QuestionModel> questionList = _questionSession == null
-                        ?_mgr.GetQuestionList(_questionnaireID)
-                        :_questionSession;
+                        ? _mgr.GetQuestionList(_questionnaireID)
+                        : _questionSession;
                     InitRpt(questionList);
                     InitDdl();
+                    InitTextbox();
                     HttpContext.Current.Session["qusetionModel"] = questionList;
 
-                    if(_isCreateMode)
+                    if (_isCreateMode)
                     {
                         //隱藏後面2個頁籤
                         HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
@@ -114,13 +115,18 @@ namespace QuerySystem.SystemAdmin
         /// <param name="e"></param>
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
-            QuestionModel question = new QuestionModel();
-            FillSelectionContent(question, out bool errorInput);
-            if (errorInput)
-                return;
-            question.QuestionID = Guid.NewGuid();
+            if (HttpContext.Current.Session["addByButton"] != null)
+            {
+                QuestionModel question = new QuestionModel();
+                FillSelectionContent(question, out bool errorInput);
+                if (errorInput)
+                    return;
+                question.QuestionID = Guid.NewGuid();
 
-            _questionSession.Add(question);
+                _questionSession.Add(question);
+                HttpContext.Current.Session.Remove("addByButton");
+            }
+
             HttpContext.Current.Session["qusetionModel"] = _questionSession;
             InitRpt(_questionSession);
             InitTextbox();
@@ -232,7 +238,7 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if(_questionSession.Count == 0)
+            if (_questionSession.Count == 0)
             {
                 this.ltlAlert.Visible = true;
                 this.ltlAlert.Text = "**請至少建立一道題目**";

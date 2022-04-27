@@ -67,13 +67,17 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
-            QuestionModel question = new QuestionModel();
-            FillSelectionContent(question, out bool errorInput);
-            if (errorInput)
-                return;
-            question.QuestionID = Guid.NewGuid();
+            if (HttpContext.Current.Session["addByButton"] != null)
+            {
+                QuestionModel question = new QuestionModel();
+                FillSelectionContent(question, out bool errorInput);
+                if (errorInput)
+                    return;
+                question.QuestionID = Guid.NewGuid();
 
-            _questionSession.Add(question);
+                _questionSession.Add(question);
+                HttpContext.Current.Session.Remove("addByButton");
+            }
             HttpContext.Current.Session["qusetionModel"] = _questionSession;
             InitRpt(_questionSession);
             InitTextbox();

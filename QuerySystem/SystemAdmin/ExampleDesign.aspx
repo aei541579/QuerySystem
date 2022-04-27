@@ -54,7 +54,7 @@
                                 <asp:TextBox ID="txtSelection" runat="server" class="form-control"></asp:TextBox>
                             </td>
                             <td>(多個答案以;分隔)
-                <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" />
+                <asp:Button ID="btnAddQuestion" runat="server" Text="加入" OnClick="btnAddQuestion_Click" OnClientClick="addsession()" />
                                 <asp:Button ID="btnEditQuestion" runat="server" Text="修改" Visible="false" OnClick="btnEditQuestion_Click" />
                             </td>
                         </tr>
@@ -150,10 +150,21 @@
 
         });
 
-        if (window.history.replaceState) {
-            //if (confirm("您確定要重整?這可能會遺失目前資料")) {
-                window.history.replaceState(null, null, window.location.href);
-            //}
+        function addsession() {
+            $.ajax({
+                url: "/API/AddQuestionHandler.ashx?Action=button",
+                method: "POST",
+                async: false,
+                success: function (txtMsg) {
+                    console.log(txtMsg);
+                    if (txtMsg == "success") {
+                    }
+                },
+                error: function (msg) {
+                    console.log(msg);
+                    alert("通訊失敗，請聯絡管理員。");
+                }
+            });
         }
 
     </script>
