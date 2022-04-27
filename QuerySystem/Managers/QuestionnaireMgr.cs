@@ -248,6 +248,7 @@ namespace QuerySystem.Managers
                     {
                         DeleteQuestion(questionnaireID);
                         DeleteAnswer(questionnaireID);
+                        DeletePerson(questionnaireID);
 
                         conn.Open();
                         command.Parameters.AddWithValue("@ID", questionnaireID);
@@ -318,6 +319,36 @@ namespace QuerySystem.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuestionnairMgr.DeleteAnswer", ex);
+                throw;
+            }
+        }
+        /// <summary>
+        /// 刪除此問卷的所有作答者資料
+        /// </summary>
+        /// <param name="questionnaireID"></param>
+        public void DeletePerson(Guid questionnaireID)
+        {
+            string connStr = ConfigHelper.GetConnectionString();
+            string commandText =
+                $@"  DELETE FROM [Persons]                     
+                     WHERE QuestionnaireID = @QuestionnaireID ";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand command = new SqlCommand(commandText, conn))
+                    {
+
+                        conn.Open();
+                        command.Parameters.AddWithValue("@QuestionnaireID", questionnaireID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuestionnairMgr.DeletePerson", ex);
                 throw;
             }
         }
@@ -585,8 +616,9 @@ namespace QuerySystem.Managers
                         if (reader.Read())
                         {
                             person = BuildPersonModel(reader);
+                            return person;
                         }
-                        return person;
+                        return null;
                     }
                 }
             }

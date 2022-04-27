@@ -11,7 +11,7 @@ namespace QuerySystem.ShareControls
     public partial class ucPager : System.Web.UI.UserControl
     {
         public int pageIndex { get; set; } = 1;
-        public int pageSize { get; set; } = 5;
+        public int pageSize { get; set; } = 10;
         public int totalRows { get; set; } = 0;
         private string _url = null;
         public string Url
@@ -38,6 +38,11 @@ namespace QuerySystem.ShareControls
             NameValueCollection collection = new NameValueCollection();
             Bind(collection);
         }
+        /// <summary>
+        /// 依queryString參數產生分頁結果
+        /// </summary>
+        /// <param name="paramKey"></param>
+        /// <param name="paramValues"></param>
         public void Bind(string[] paramKey, string[] paramValues)
         {
             NameValueCollection collection = new NameValueCollection();

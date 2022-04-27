@@ -6,14 +6,24 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 
 namespace QuerySystem.SystemAdmin
 {
     public partial class List : System.Web.UI.Page
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
-        private const int _pageSize = 5;
+        /// <summary>
+        /// 一頁欲顯示清單筆數
+        /// </summary>
+        private const int _pageSize = 10;
+        /// <summary>
+        /// 目前分頁的index
+        /// </summary>
         private static int _pageIndex;
+        /// <summary>
+        /// 清單總筆數
+        /// </summary>
         private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,7 +34,6 @@ namespace QuerySystem.SystemAdmin
             if (!IsPostBack)
             {
                 GetSearchResult();
-
             }
         }
         private void GetSearchResult()
@@ -33,10 +42,10 @@ namespace QuerySystem.SystemAdmin
             string keyword = this.Request.QueryString["keyword"];
             string start = this.Request.QueryString["start"];
             string end = this.Request.QueryString["end"];
-            List<QuestionnaireModel> dataList =
-                string.IsNullOrWhiteSpace(keyword)
-                ? _mgr.GetQuestionnaireList()
-                : _mgr.GetQuestionnaireList(keyword);
+            List<QuestionnaireModel> dataList = _mgr.GetQuestionnaireList();
+            if (!string.IsNullOrWhiteSpace(keyword))
+                dataList = dataList.FindAll(x => x.QueryName.Contains(keyword));
+
             this.txtTitle.Text = keyword;
             if (DateTime.TryParse(start, out DateTime startTime))
                 this.txtStartTime.Text = startTime.ToString("yyyy-MM-dd");
@@ -60,6 +69,10 @@ namespace QuerySystem.SystemAdmin
             this.ucPager.Bind(paramKey, paramValues);
             InitRpt(resultList);
         }
+        /// <summary>
+        /// 初始化清單列表
+        /// </summary>
+        /// <param name="questionnaireList"></param>
         private void InitRpt(List<QuestionnaireModel> questionnaireList)
         {
             this.rptTable.DataSource = questionnaireList;
@@ -84,12 +97,12 @@ namespace QuerySystem.SystemAdmin
             }
             List<QuestionnaireModel> questionnaireList = _mgr.GetQuestionnaireList();
             InitRpt(questionnaireList);
-            Response.Redirect(this.Request.Url.LocalPath + "?Page=1");
+            Response.Redirect(ConfigHelper.ListPage() + "?Page=1");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string redirectUrl = this.Request.Url.LocalPath + "?Page=1";
+            string redirectUrl = ConfigHelper.ListPage() + "?Page=1";
             if (!string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
                 redirectUrl += "&keyword=" + this.txtTitle.Text.Trim();
             if (DateTime.TryParse(this.txtStartTime.Text, out DateTime startTime))
@@ -101,7 +114,7 @@ namespace QuerySystem.SystemAdmin
 
         protected void btnCreate_Click(object sender, EventArgs e)
         {
-            Response.Redirect("QuestionDesign.aspx");
+            Response.Redirect(ConfigHelper.QuestionDesignPage());
         }
     }
 }

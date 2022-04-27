@@ -1,11 +1,10 @@
 ﻿using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web;
 
 namespace QuerySystem.SystemAdmin
 {
@@ -16,12 +15,17 @@ namespace QuerySystem.SystemAdmin
         private static List<AnswerModel> _answerList;
         protected void Page_Load(object sender, EventArgs e)
         {
+            var sessionID = HttpContext.Current.Session["ID"];
             string personIDstring = Request.QueryString["PersonID"];
             if (Guid.TryParse(personIDstring, out _personID))
             {
                 PersonModel person = _mgr.GetPerson(_personID);
+                //若資料庫找不到該作答者，則跳轉回此問卷的作答清單頁
+                if (person == null)
+                    Response.Redirect(ConfigHelper.AnswerListPage() + sessionID);
+
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(person.QuestionnaireID);
-                this.ansListLink.HRef = "AnswerList.aspx?ID=" + questionnaire.QuestionnaireID.ToString();
+                this.ansListLink.HRef = ConfigHelper.AnswerListPage() + questionnaire.QuestionnaireID.ToString();
                 this.ltlTitle.Text = questionnaire.QueryName;
                 this.ltlContent.Text = questionnaire.QueryContent;
 
@@ -56,7 +60,7 @@ namespace QuerySystem.SystemAdmin
                 }
             }
             else
-                Response.Redirect("List.aspx");
+                Response.Redirect(ConfigHelper.AnswerListPage() + sessionID);
         }
         private void CreateRdb(QuestionModel question)
         {

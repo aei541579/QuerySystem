@@ -1,13 +1,11 @@
 ﻿using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace QuerySystem.SystemAdmin
@@ -17,7 +15,7 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<PersonModel> _personList;
-        private const int _pageSize = 5;
+        private const int _pageSize = 10;
         protected void Page_Load(object sender, EventArgs e)
         {
             string IDstring = Request.QueryString["ID"];
@@ -26,6 +24,8 @@ namespace QuerySystem.SystemAdmin
 
             if (Guid.TryParse(IDstring, out _questionnaireID))
             {
+                if (_mgr.GetQuestionnaire(_questionnaireID) == null)
+                    Response.Redirect(ConfigHelper.ListPage());
 
                 _personList = _mgr.GetPersonList(_questionnaireID);
                 List<PersonModel> showList = GetIndexList(pageIndex, _personList);
@@ -46,7 +46,7 @@ namespace QuerySystem.SystemAdmin
                 }
             }
             else
-                Response.Redirect("List.aspx");
+                Response.Redirect(ConfigHelper.ListPage());
         }
         private List<PersonModel> GetIndexList(int pageIndex, List<PersonModel> list)
         {

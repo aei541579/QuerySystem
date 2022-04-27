@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using QuerySystem.Models;
 using QuerySystem.Managers;
+using QuerySystem.Helpers;
 using System.Web.UI.HtmlControls;
 
 namespace QuerySystem.SystemAdmin
@@ -16,6 +17,9 @@ namespace QuerySystem.SystemAdmin
         private static Guid _questionnaireID;
         private static List<QuestionModel> _questionSession;
         private static QuestionnaireModel _questionnaire;
+        /// <summary>
+        /// 此問卷是否尚未被寫入資料庫
+        /// </summary>
         private static bool _isCreateMode;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -40,6 +44,7 @@ namespace QuerySystem.SystemAdmin
 
                     if(_isCreateMode)
                     {
+                        //隱藏後面2個頁籤
                         HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
                         HtmlAnchor linkAstastic = Master.FindControl("Astastic") as HtmlAnchor;
                         linkAlist.Visible = false;
@@ -50,10 +55,13 @@ namespace QuerySystem.SystemAdmin
                         InitDisabledInput();
                 }
                 else
-                    Response.Redirect("List.aspx");
+                    Response.Redirect(ConfigHelper.ListPage());
             }
 
         }
+        /// <summary>
+        /// 初始化常用問題(dropdownlist)
+        /// </summary>
         private void InitDdl()
         {
             List<QuestionnaireModel> exampleList = _mgr.GetExampleList();
@@ -65,6 +73,10 @@ namespace QuerySystem.SystemAdmin
                 this.ddlTemplate.Items.Add(ddlItem);
             }
         }
+        /// <summary>
+        /// 建立問題列表
+        /// </summary>
+        /// <param name="questionList"></param>
         private void InitRpt(List<QuestionModel> questionList)
         {
             if (questionList != null || questionList.Count > 0)
@@ -83,6 +95,9 @@ namespace QuerySystem.SystemAdmin
             else
                 this.rptQuestion.Visible = false;
         }
+        /// <summary>
+        /// 初始化(清空)欄位
+        /// </summary>
         private void InitTextbox()
         {
             this.txtQuestion.Text = "";
@@ -92,8 +107,11 @@ namespace QuerySystem.SystemAdmin
             this.btnAddQuestion.Visible = true;
             this.btnEditQuestion.Visible = false;
         }
-
-
+        /// <summary>
+        /// 加入問題的button事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
             QuestionModel question = new QuestionModel();
@@ -107,7 +125,11 @@ namespace QuerySystem.SystemAdmin
             InitRpt(_questionSession);
             InitTextbox();
         }
-
+        /// <summary>
+        /// 依輸入的值建立問題model
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="errorInput"></param>
         private void FillSelectionContent(QuestionModel question, out bool errorInput)
         {
             errorInput = false;
@@ -121,6 +143,11 @@ namespace QuerySystem.SystemAdmin
             question.Selection = this.txtSelection.Text.Trim();
             question.Necessary = this.ckbNecessary.Checked;
         }
+        /// <summary>
+        /// 判斷是否無輸入問題標題
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private bool NoInput(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -135,6 +162,11 @@ namespace QuerySystem.SystemAdmin
                 return false;
             }
         }
+        /// <summary>
+        /// 判斷回答設計是否不合理
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private bool ErrorInput(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -195,7 +227,7 @@ namespace QuerySystem.SystemAdmin
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             HttpContext.Current.Session.Remove("qusetionModel");
-            Response.Redirect("List.aspx");
+            Response.Redirect(ConfigHelper.ListPage());
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -208,12 +240,11 @@ namespace QuerySystem.SystemAdmin
             }
 
             //若session有值，代表為新增狀態
-            //QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
             if (_isCreateMode)
                 _mgr.CreateQuestionnaire(_questionnaire);
 
             //若資料庫已存在問題，一併先刪除舊問題，再寫入更新後問題
-            if (_mgr.GetQuestionList(_questionnaireID) != null)
+            if (_mgr.GetQuestionList(_questionnaireID).Count != 0)
                 _mgr.DeleteQuestion(_questionnaireID);
 
             int questionNo = 1;
@@ -228,7 +259,7 @@ namespace QuerySystem.SystemAdmin
             }
             HttpContext.Current.Session.Remove("qusetionModel");
             HttpContext.Current.Session.Remove("QuestionnaireSession");
-            Response.Redirect("List.aspx");
+            Response.Redirect(ConfigHelper.ListPage());
         }
 
         protected void rptQuestion_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -283,6 +314,9 @@ namespace QuerySystem.SystemAdmin
             }
 
         }
+        /// <summary>
+        /// 若已有作答，則將欄位enable設定為false
+        /// </summary>
         private void InitDisabledInput()
         {
             this.ltlAlert.Visible = true;

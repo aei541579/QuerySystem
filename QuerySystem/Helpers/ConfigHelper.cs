@@ -42,5 +42,29 @@ namespace QuerySystem.Helpers
         {
             return ConfigurationManager.AppSettings["FormPage"];
         }
+        /// <summary>
+        /// 取得問卷設計頁的url
+        /// </summary>
+        /// <returns></returns>
+        public static string QuestionDesignPage()
+        {
+            return ConfigurationManager.AppSettings["QuestionDesignPage"]; 
+        }
+        /// <summary>
+        /// 取得問題設計頁的url + ?ID=
+        /// </summary>
+        /// <returns></returns>
+        public static string QuestionDetailPage()
+        {
+            return ConfigurationManager.AppSettings["QuestionDetailPage"];
+        }
+        /// <summary>
+        /// 取得填寫資料頁url + ?ID=
+        /// </summary>
+        /// <returns></returns>
+        public static string AnswerListPage()
+        {
+            return ConfigurationManager.AppSettings["AnswerListPage"];
+        }
     }
 }
