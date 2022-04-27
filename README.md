@@ -1,7 +1,7 @@
 >資料庫(MSSQL)
->>結構與描述 structure.sql
->>資料 data.sql
->>備份 QuerySystem.bak
+>>結構與描述 structure.sql</br>
+>>資料 data.sql</br>
+>>備份 QuerySystem.bak</br>
 
 >前台起始頁面
 >>List.aspx
