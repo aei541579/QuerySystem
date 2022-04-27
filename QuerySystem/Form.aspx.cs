@@ -25,8 +25,21 @@ namespace QuerySystem
                 _isEditMode = _answerList == null ? false : true;
 
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
-                if (questionnaire == null)
+                if (questionnaire == null || questionnaire.IsActive == ActiveType.已關閉)
                     Response.Redirect(ConfigHelper.ListPage());
+
+                switch (questionnaire.State)
+                {
+                    case StateType.投票中:
+                        this.hfState.Value = "voting";
+                        break;
+                    case StateType.尚未開放:
+                        this.hfState.Value = "notyet";
+                        break;
+                    case StateType.已結束:
+                        this.hfState.Value = "expire";
+                        break;
+                }
                 this.hfID.Value = _questionnaireID.ToString();
                 this.ltlTitle.Text = questionnaire.QueryName;
                 this.ltlContent.Text = questionnaire.QueryContent;

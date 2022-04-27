@@ -1,4 +1,5 @@
-﻿using QuerySystem.Managers;
+﻿using QuerySystem.Helpers;
+using QuerySystem.Managers;
 using QuerySystem.Models;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,11 @@ namespace QuerySystem.SystemAdmin
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
         private static Guid _questionnaireID;
         private static List<QuestionModel> _questionSession;
-        //private static QuestionnaireModel _exampleModel;
         private static bool _isCreateMode;
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
-            //_exampleModel = HttpContext.Current.Session["ExampleModel"] as QuestionnaireModel;
 
-            //InitRpt(_questionSession);
             if (!IsPostBack)
             {
                 string IDstring = Request.QueryString["ID"];
@@ -34,7 +32,7 @@ namespace QuerySystem.SystemAdmin
                     HttpContext.Current.Session["qusetionModel"] = questionList;
                 }
                 else
-                    Response.Redirect("ExampleList.aspx");
+                    Response.Redirect(ConfigHelper.ExampleListPage());
             }
 
         }
@@ -166,7 +164,7 @@ namespace QuerySystem.SystemAdmin
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             HttpContext.Current.Session.RemoveAll();
-            Response.Redirect("ExampleList.aspx");
+            Response.Redirect(ConfigHelper.ExampleListPage());
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -203,7 +201,7 @@ namespace QuerySystem.SystemAdmin
             }
             HttpContext.Current.Session.Remove("qusetionModel");
             HttpContext.Current.Session.Remove("ExampleModel");
-            Response.Redirect("ExampleList.aspx");
+            Response.Redirect(ConfigHelper.ExampleListPage());
         }
 
         protected void rptQuestion_ItemCommand(object source, RepeaterCommandEventArgs e)

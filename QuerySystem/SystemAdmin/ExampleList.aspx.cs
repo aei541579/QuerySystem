@@ -1,5 +1,6 @@
 ﻿using QuerySystem.Models;
 using QuerySystem.Managers;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace QuerySystem.SystemAdmin
     public partial class ExampleList : System.Web.UI.Page
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
-        private const int _pageSize = 5;
+        private const int _pageSize = 10;
         private static int _pageIndex;
         private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
@@ -24,21 +25,25 @@ namespace QuerySystem.SystemAdmin
             if (!IsPostBack)
             {
                 string keyword = this.Request.QueryString["keyword"];
-                List<QuestionnaireModel> questionnaireList =
-                    string.IsNullOrWhiteSpace(keyword)
-                    ? _mgr.GetExampleList()
-                    : _mgr.GetExampleList(keyword);
+                List<QuestionnaireModel> questionnaireList = _mgr.GetExampleList();
+                if (!string.IsNullOrWhiteSpace(keyword))
+                    questionnaireList = questionnaireList.FindAll(x => x.QueryName.Contains(keyword));
+
                 List<QuestionnaireModel> resultList = _mgr.GetIndexList(_pageIndex, _pageSize, questionnaireList);
                 this.txtTitle.Text = keyword;
                 _totalRows = resultList.Count;
                 this.ucPager.totalRows = _totalRows;
                 this.ucPager.pageIndex = _pageIndex;
-                string[] paramKey = { "keyword"};
-                string[] paramValues = { keyword};
+                string[] paramKey = { "keyword" };
+                string[] paramValues = { keyword };
                 this.ucPager.Bind(paramKey, paramValues);
                 InitRpt(resultList);
             }
         }
+        /// <summary>
+        /// 建立清單列表
+        /// </summary>
+        /// <param name="questionnaireList"></param>
         private void InitRpt(List<QuestionnaireModel> questionnaireList)
         {
             this.rptTable.DataSource = questionnaireList;
@@ -66,7 +71,7 @@ namespace QuerySystem.SystemAdmin
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
-        {            
+        {
             string redirectUrl = this.Request.Url.LocalPath + "?Page=1";
             if (!string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
                 redirectUrl += "&keyword=" + this.txtTitle.Text.Trim();
@@ -74,13 +79,8 @@ namespace QuerySystem.SystemAdmin
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
-        {
-            //QuestionnaireModel questionnaire = new QuestionnaireModel()
-            //{
-            //    QuestionnaireID = Guid.NewGuid()
-            //};
-            //HttpContext.Current.Session["ExampleModel"] = questionnaire;
-            Response.Redirect("ExampleDesign.aspx?ID=" + Guid.NewGuid());
+        {           
+            Response.Redirect(ConfigHelper.ExampleDesignPage() + Guid.NewGuid());
         }
     }
 }

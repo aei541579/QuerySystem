@@ -77,58 +77,7 @@ namespace QuerySystem.Managers
                         List<QuestionnaireModel> questionnaireList = new List<QuestionnaireModel>();
                         while (reader.Read())
                         {
-                            QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            if (questionnaire.StartTime > DateTime.Now)
-                                questionnaire.State = StateType.尚未開放;
-                            else if (questionnaire.EndTime < DateTime.Now)
-                                questionnaire.State = StateType.已結束;
-                            else
-                                questionnaire.State = StateType.投票中;
-                            questionnaireList.Add(questionnaire);
-                        }
-                        return questionnaireList;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLog("QuestionnairMgr.GetQuestionnaire", ex);
-                throw;
-            }
-        }
-        /// <summary>
-        /// 取得所有問卷(非常用)搜尋結果清單
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
-        public List<QuestionnaireModel> GetQuestionnaireList(string keyword)
-        {
-            string connStr = ConfigHelper.GetConnectionString();
-            string commandText =
-                $@"  SELECT *
-                     FROM [Questionnaires]
-                     WHERE QueryName Like '%'+@keyword+'%' AND IsExample = 0
-                     ORDER BY CreateTime DESC ";
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connStr))
-                {
-                    using (SqlCommand command = new SqlCommand(commandText, conn))
-                    {
-                        command.Parameters.AddWithValue("@keyword", keyword);
-                        conn.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        List<QuestionnaireModel> questionnaireList = new List<QuestionnaireModel>();
-                        while (reader.Read())
-                        {
-                            QuestionnaireModel questionnaire = BuildQuestionnaire(reader);
-                            if (questionnaire.StartTime > DateTime.Now)
-                                questionnaire.State = StateType.尚未開放;
-                            else if (questionnaire.EndTime < DateTime.Now)
-                                questionnaire.State = StateType.已結束;
-                            else
-                                questionnaire.State = StateType.投票中;
+                            QuestionnaireModel questionnaire = BuildQuestionnaire(reader);                            
                             questionnaireList.Add(questionnaire);
                         }
                         return questionnaireList;
@@ -359,7 +308,7 @@ namespace QuerySystem.Managers
         /// <returns></returns>
         private QuestionnaireModel BuildQuestionnaire(SqlDataReader reader)
         {
-            return new QuestionnaireModel()
+            QuestionnaireModel questionnaire = new QuestionnaireModel()
             {
                 QuestionnaireID = (Guid)reader["ID"],
                 QueryName = reader["QueryName"] as string,
@@ -369,6 +318,14 @@ namespace QuerySystem.Managers
                 EndTime = (DateTime)reader["EndTime"],
                 IsActive = (bool)reader["IsActive"] ? ActiveType.開放 : ActiveType.已關閉
             };
+            if (questionnaire.StartTime > DateTime.Now)
+                questionnaire.State = StateType.尚未開放;
+            else if (questionnaire.EndTime < DateTime.Now)
+                questionnaire.State = StateType.已結束;
+            else
+                questionnaire.State = StateType.投票中;
+
+            return questionnaire;
         }
         #endregion
 
@@ -899,45 +856,6 @@ namespace QuerySystem.Managers
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        public List<QuestionnaireModel> GetExampleList(string keyword)
-        {
-            string connStr = ConfigHelper.GetConnectionString();
-            string commandText =
-                $@"  SELECT *
-                     FROM [Questionnaires]
-                     WHERE QueryName Like '%'+@keyword+'%' AND IsExample = 1
-                     ORDER BY CreateTime DESC ";
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connStr))
-                {
-                    using (SqlCommand command = new SqlCommand(commandText, conn))
-                    {
-                        command.Parameters.AddWithValue("@keyword", keyword);
-                        conn.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        List<QuestionnaireModel> questionnaireList = new List<QuestionnaireModel>();
-                        while (reader.Read())
-                        {
-                            QuestionnaireModel questionnaire = new QuestionnaireModel()
-                            {
-                                QuestionnaireID = (Guid)reader["ID"],
-                                QueryName = reader["QueryName"] as string,
-                                CreateTime = (DateTime)reader["CreateTime"]
-                            };
-                            questionnaireList.Add(questionnaire);
-                        }
-                        return questionnaireList;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLog("QuestionnairMgr.GetExampleList", ex);
-                throw;
-            }
-        }
         #endregion
 
     }

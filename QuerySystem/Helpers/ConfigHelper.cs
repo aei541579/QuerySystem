@@ -66,5 +66,21 @@ namespace QuerySystem.Helpers
         {
             return ConfigurationManager.AppSettings["AnswerListPage"];
         }
+        /// <summary>
+        /// 取得常用問題設計頁url + ?ID=
+        /// </summary>
+        /// <returns></returns>
+        public static string ExampleDesignPage()
+        {
+            return ConfigurationManager.AppSettings["ExampleDesignPage"];
+        }
+        /// <summary>
+        /// 取得常用問題列表頁url
+        /// </summary>
+        /// <returns></returns>
+        public static string ExampleListPage()
+        {
+            return ConfigurationManager.AppSettings["ExampleListPage"];
+        }
     }
 }

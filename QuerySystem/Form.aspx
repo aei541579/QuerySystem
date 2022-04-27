@@ -18,6 +18,7 @@
             <div class="row">
                 <%--<a href="List.aspx">回列表頁</a>--%>
                 <div class="col-lg-8">
+                    <asp:HiddenField ID="hfState" runat="server" />
                     <asp:HiddenField ID="hfID" runat="server" />
                     <h3>
                         <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h3>
@@ -60,6 +61,15 @@
 
     <script>
         $(document).ready(function () {
+            if ($("#hfState").val() == "notyet") {
+                alert("此問卷尚未開放");
+                window.location = "List.aspx";
+            }
+            if ($("#hfState").val() == "expire") {
+                alert("此問卷已截止作答");
+                window.location = "List.aspx";
+            }
+
             $("input[id*=Q][type=text]").attr('style', 'margin-bottom:25px;');
 
             $("input[id=btnSubmit]").click(function () {
