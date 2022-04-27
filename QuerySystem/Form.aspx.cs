@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 
 namespace QuerySystem
 {
@@ -24,6 +25,8 @@ namespace QuerySystem
                 _isEditMode = _answerList == null ? false : true;
 
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
+                if (questionnaire == null)
+                    Response.Redirect(ConfigHelper.ListPage());
                 this.hfID.Value = _questionnaireID.ToString();
                 this.ltlTitle.Text = questionnaire.QueryName;
                 this.ltlContent.Text = questionnaire.QueryContent;
@@ -61,42 +64,14 @@ namespace QuerySystem
                 }
             }
             else
-                Response.Redirect("List.aspx");
+                Response.Redirect(ConfigHelper.ListPage());
 
 
         }
-        /*
-        private void CreateRdb(QuestionModel question)
-        {
-            RadioButtonList radioButtonList = new RadioButtonList();
-            radioButtonList.ID = "Q" + question.QuestionNo;
-            this.plcDynamic.Controls.Add(radioButtonList);
-            string[] arrQue = question.Selection.Split(';');
-            for (int i = 0; i < arrQue.Length; i++)
-            {
-                ListItem item = new ListItem(arrQue[i], i.ToString());
-                radioButtonList.Items.Add(item);
-            }
-        }
-        private void CreateCkb(QuestionModel question)
-        {
-            CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + question.QuestionNo;
-            this.plcDynamic.Controls.Add(checkBoxList);
-            string[] arrQue = question.Selection.Split(';');
-            for (int i = 0; i < arrQue.Length; i++)
-            {
-                ListItem item = new ListItem(arrQue[i], i.ToString());
-                checkBoxList.Items.Add(item);
-            }
-        }
-        private void CreateTxt(QuestionModel question)
-        {
-            TextBox textBox = new TextBox();
-            textBox.ID = "Q" + question.QuestionNo;
-            this.plcDynamic.Controls.Add(textBox);
-        }
-        */
+        /// <summary>
+        /// 建立單選方塊
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateRdb(QuestionModel question)
         {
             AnswerModel rdb = _isEditMode
@@ -116,6 +91,10 @@ namespace QuerySystem
                 radioButtonList.Items.Add(item);
             }
         }
+        /// <summary>
+        /// 建立複選方塊
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateCkb(QuestionModel question)
         {
             List<AnswerModel> ckbList = _isEditMode
@@ -135,6 +114,10 @@ namespace QuerySystem
                 checkBoxList.Items.Add(item);
             }
         }
+        /// <summary>
+        /// 建立文字方塊
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateTxt(QuestionModel question)
         {
             AnswerModel txt = _isEditMode
@@ -149,11 +132,11 @@ namespace QuerySystem
             this.plcDynamic.Controls.Add(textBox);
         }
 
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            HttpContext.Current.Session.RemoveAll();
-            Response.Redirect("List.aspx");
-        }
+        //protected void btnCancel_Click(object sender, EventArgs e)
+        //{
+        //    HttpContext.Current.Session.RemoveAll();
+        //    Response.Redirect(ConfigHelper.ListPage());
+        //}
 
     }
 }

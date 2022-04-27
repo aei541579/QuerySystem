@@ -1,5 +1,6 @@
 ﻿using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace QuerySystem
             string IDstring = Request.QueryString["ID"];
             if (Guid.TryParse(IDstring, out _questionnaireID) && _answerList != null)
             {
+                //若session的questionnaireID與querystring的不符，導回列表頁
+                if (_answerList[0].QuestionnaireID != _questionnaireID)
+                    Response.Redirect(ConfigHelper.ListPage());
+
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
                 this.hfID.Value = _questionnaireID.ToString();
                 this.ltlTitle.Text = questionnaire.QueryName;
@@ -57,8 +62,12 @@ namespace QuerySystem
                 }
             }
             else
-                Response.Redirect("List.aspx");
+                Response.Redirect(ConfigHelper.ListPage());
         }
+        /// <summary>
+        /// 建立單選方塊作答結果
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateRdb(QuestionModel question)
         {
             AnswerModel rdb = _answerList.Find(x => x.QuestionNo == question.QuestionNo);
@@ -79,7 +88,13 @@ namespace QuerySystem
                     }
                 }
             }
+            else
+                CreateNoAnswerLiteral();
         }
+        /// <summary>
+        /// 建立複選方塊作答結果
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateCkb(QuestionModel question)
         {
             List<AnswerModel> ckbList = _answerList.FindAll(x => x.QuestionNo == question.QuestionNo);
@@ -100,7 +115,14 @@ namespace QuerySystem
                     }
                 }
             }
+            else
+                CreateNoAnswerLiteral();
+            
         }
+        /// <summary>
+        /// 建立文字方塊作答結果
+        /// </summary>
+        /// <param name="question"></param>
         private void CreateTxt(QuestionModel question)
         {
             AnswerModel txt = _answerList.Find(x => x.QuestionNo == question.QuestionNo);
@@ -112,6 +134,17 @@ namespace QuerySystem
                 textBox.Text = txt.Answer;
                 this.plcDynamic.Controls.Add(textBox);
             }
+            else
+                CreateNoAnswerLiteral();
+        }
+        /// <summary>
+        /// 建立無作答的文字提示
+        /// </summary>
+        private void CreateNoAnswerLiteral()
+        {
+            Literal ltlNoAnswer = new Literal();
+            ltlNoAnswer.Text = "(此題無作答)<br/>";
+            this.plcDynamic.Controls.Add(ltlNoAnswer);
         }
 
     }

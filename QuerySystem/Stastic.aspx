@@ -16,10 +16,10 @@
             width: 500px;
             height: 400px;
         }
-
-        /*div {
-            font-size: 20px;
-        }*/
+        a{
+            padding-top:20px;
+            margin-bottom:20px;
+        }
     </style>
 </head>
 <body>
@@ -32,9 +32,7 @@
                     <h5>
                         <asp:Literal ID="ltlContent" runat="server"></asp:Literal></h5>
                     <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
-                    <%--<div id="legendPlaceholder"></div>
-                    <div id="flotcontainer"></div>--%>
-                </div>
+                </div>                
                 <a href="List.aspx">回列表頁</a>
             </div>
         </div>

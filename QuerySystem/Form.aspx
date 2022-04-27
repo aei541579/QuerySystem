@@ -16,7 +16,7 @@
     <form id="form1" runat="server">
         <div class="container">
             <div class="row">
-                <a href="List.aspx">回列表頁</a>
+                <%--<a href="List.aspx">回列表頁</a>--%>
                 <div class="col-lg-8">
                     <asp:HiddenField ID="hfID" runat="server" />
                     <h3>

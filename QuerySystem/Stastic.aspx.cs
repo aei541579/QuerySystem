@@ -1,16 +1,8 @@
 ﻿using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
@@ -26,6 +18,9 @@ namespace QuerySystem
             if (Guid.TryParse(IDstring, out _questionnaireID))
             {
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
+                if (questionnaire == null)
+                    Response.Redirect(ConfigHelper.ListPage());
+
                 this.ltlTitle.Text = questionnaire.QueryName;
                 this.ltlContent.Text = questionnaire.QueryContent;
 
@@ -45,13 +40,14 @@ namespace QuerySystem
                         int total = 0;
                         foreach (StasticModel item in NoList)
                         {
+                            //計算該題回答總筆數
                             total += item.AnsCount;
                         }
 
                         if (total == 0)
                         {
                             Literal ltlNoAns = new Literal();
-                            ltlNoAns.Text = "尚無資料<br/>";
+                            ltlNoAns.Text = "(尚無作答資料)<br/>";
                             this.plcDynamic.Controls.Add(ltlNoAns);
                         }
                         else
@@ -60,7 +56,7 @@ namespace QuerySystem
                             legendPlaceholder.ID = "legendPlaceholder";
                             HtmlGenericControl flotcontainer = new HtmlGenericControl("div");
                             flotcontainer.ID = "flotcontainer";
-                            flotcontainer.Attributes.Add("class",question.QuestionNo.ToString());
+                            flotcontainer.Attributes.Add("class", question.QuestionNo.ToString());
                             
                             this.plcDynamic.Controls.Add(legendPlaceholder);
                             this.plcDynamic.Controls.Add(flotcontainer);
@@ -69,13 +65,13 @@ namespace QuerySystem
                     else
                     {
                         Literal ltlSelection = new Literal();
-                        ltlSelection.Text = "-<br/>";
+                        ltlSelection.Text = "(文字方塊不統計)<br/>";
                         this.plcDynamic.Controls.Add(ltlSelection);
                     }
                 }
             }
             else
-                Response.Redirect("List.aspx");
+                Response.Redirect(ConfigHelper.ListPage());
 
         }
 

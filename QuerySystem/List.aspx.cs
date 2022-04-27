@@ -1,5 +1,6 @@
 ﻿using QuerySystem.Managers;
 using QuerySystem.Models;
+using QuerySystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace QuerySystem
     public partial class List : System.Web.UI.Page
     {
         private static QuestionnaireMgr _mgr = new QuestionnaireMgr();
-        private const int _pageSize = 5;
+        private const int _pageSize = 10;
         private static int _pageIndex;
         private static int _totalRows;
         protected void Page_Load(object sender, EventArgs e)
@@ -24,7 +25,7 @@ namespace QuerySystem
 
             if (!IsPostBack)
             {
-                GetSearchResult();                
+                GetSearchResult();
             }
         }
         private void GetSearchResult()
@@ -33,10 +34,10 @@ namespace QuerySystem
             string keyword = this.Request.QueryString["keyword"];
             string start = this.Request.QueryString["start"];
             string end = this.Request.QueryString["end"];
-            List<QuestionnaireModel> dataList =
-                string.IsNullOrWhiteSpace(keyword)
-                ? _mgr.GetQuestionnaireList().FindAll(x => x.IsActive == ActiveType.開放)
-                : _mgr.GetQuestionnaireList(keyword).FindAll(x => x.IsActive == ActiveType.開放);
+            List<QuestionnaireModel> dataList = _mgr.GetQuestionnaireList().FindAll(x => x.IsActive == ActiveType.開放);
+            if (!string.IsNullOrWhiteSpace(keyword))
+               dataList = dataList.FindAll(x => x.QueryName.Contains(keyword));
+
             this.txtTitle.Text = keyword;
             if (DateTime.TryParse(start, out DateTime startTime))
                 this.txtStartTime.Text = startTime.ToString("yyyy-MM-dd");
@@ -61,13 +62,17 @@ namespace QuerySystem
             InitRpt(resultList);
         }
 
+        /// <summary>
+        /// 初始化清單列表
+        /// </summary>
+        /// <param name="questionnaireList"></param>
         private void InitRpt(List<QuestionnaireModel> questionnaireList)
         {
             this.rptTable.DataSource = questionnaireList;
             this.rptTable.DataBind();
             int i = _totalRows - (_pageIndex - 1) * _pageSize;
             foreach (RepeaterItem item in this.rptTable.Items)
-            {                
+            {
                 Label lblNumber = item.FindControl("lblNumber") as Label;
                 lblNumber.Text = i.ToString();
                 i--;
@@ -77,7 +82,7 @@ namespace QuerySystem
                 if (lblState.Text != "投票中")
                     aQueLink.HRef = "";
                 else
-                    aQueLink.HRef = "Form.aspx?ID=" + hfID.Value;
+                    aQueLink.HRef = ConfigHelper.FormPage() + "?ID=" + hfID.Value;
 
             }
         }

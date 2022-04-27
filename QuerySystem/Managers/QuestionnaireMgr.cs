@@ -38,8 +38,9 @@ namespace QuerySystem.Managers
                         if (reader.Read())
                         {
                             Questionnaire = BuildQuestionnaire(reader);
+                            return Questionnaire;
                         }
-                        return Questionnaire;
+                        return null;
                     }
                 }
             }
@@ -47,7 +48,7 @@ namespace QuerySystem.Managers
             {
                 Logger.WriteLog("QuestionnairMgr.GetQuestionnaire", ex);
                 //若有人在querystring輸入不符合條件的guid，則跳轉回列表頁
-                HttpContext.Current.Response.Redirect("List.aspx");
+                HttpContext.Current.Response.Redirect(ConfigHelper.ListPage());
                 throw;
             }
         }
@@ -152,7 +153,7 @@ namespace QuerySystem.Managers
 
             return list.Skip(skip).Take(pageSize).ToList();
 
-        }       
+        }
         /// <summary>
         /// 新增問卷
         /// </summary>
@@ -908,5 +909,5 @@ namespace QuerySystem.Managers
         #endregion
 
     }
-    
+
 }
