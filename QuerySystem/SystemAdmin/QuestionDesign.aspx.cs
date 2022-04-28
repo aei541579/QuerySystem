@@ -31,7 +31,14 @@ namespace QuerySystem.SystemAdmin
                 //若session有問卷，則問卷仍未寫進資料庫(自問題編輯頁跳轉回來)
                 QuestionnaireModel questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
                 if (questionnaire != null)
+                {
                     _isNewQuestionnaire = true;
+                    //隱藏後面2個頁籤
+                    HtmlAnchor linkAlist = Master.FindControl("Alist") as HtmlAnchor;
+                    HtmlAnchor linkAstastic = Master.FindControl("Astastic") as HtmlAnchor;
+                    linkAlist.Visible = false;
+                    linkAstastic.Visible = false;
+                }
                 else
                 {
                     _isNewQuestionnaire = false;
