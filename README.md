@@ -58,7 +58,4 @@ asp.net framework4.8
 >**[Helpers]**
 >>ConfigHelper.cs `讀取web.config相關參數`</br>
 >>Logger.cs `寫入錯誤訊息`
->>
->**[CSS]** 
->
->**[JS]**
+
