@@ -127,6 +127,8 @@ namespace QuerySystem.SystemAdmin
             errorMsg = string.Empty;
             if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
                 errorMsg += "**必須輸入問卷標題**<br/>";
+            else if (_mgr.GetQuestionnaireList().FindAll(x => x.QueryName.Equals(this.txtTitle.Text.Trim())).Count > 0)
+                errorMsg += "**已存在相同名稱之問卷**";
             if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
                 errorMsg += "**必須輸入起始日期**<br/>";
             else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today && _isNewQuestionnaire)
