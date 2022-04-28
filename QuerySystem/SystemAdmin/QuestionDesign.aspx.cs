@@ -45,7 +45,7 @@ namespace QuerySystem.SystemAdmin
                     //session無問卷，則從資料庫叫問卷
                     questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
                     //若回傳null，表示為手動輸入ID且此問卷不存在，跳轉回清單頁
-                    if(questionnaire == null)
+                    if (questionnaire == null)
                         Response.Redirect(ConfigHelper.ListPage());
                 }
 
@@ -63,7 +63,7 @@ namespace QuerySystem.SystemAdmin
         /// </summary>
         /// <param name="questionnaire"></param>
         private void initEditMode(QuestionnaireModel questionnaire)
-        {            
+        {
             this.txtTitle.Text = questionnaire.QueryName;
             this.txtContent.Text = questionnaire.QueryContent;
             this.txtStartTime.Text = questionnaire.StartTime.ToString("yyyy-MM-dd");
@@ -128,7 +128,12 @@ namespace QuerySystem.SystemAdmin
             if (string.IsNullOrWhiteSpace(this.txtTitle.Text.Trim()))
                 errorMsg += "**必須輸入問卷標題**<br/>";
             else if (_mgr.GetQuestionnaireList().FindAll(x => x.QueryName.Equals(this.txtTitle.Text.Trim())).Count > 0)
-                errorMsg += "**已存在相同名稱之問卷**";
+            {
+                if (_isNewQuestionnaire)
+                    errorMsg += "**已存在相同名稱之問卷**";
+                else if(string.Compare(this.txtTitle.Text.Trim(), _mgr.GetQuestionnaire(_questionnaireID).QueryName) != 0)
+                    errorMsg += "**已存在相同名稱之問卷**";
+            }
             if (string.IsNullOrWhiteSpace(this.txtStartTime.Text))
                 errorMsg += "**必須輸入起始日期**<br/>";
             else if (Convert.ToDateTime(this.txtStartTime.Text) < DateTime.Today && _isNewQuestionnaire)
