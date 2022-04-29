@@ -22,7 +22,10 @@ namespace QuerySystem.API
                 string profileString = context.Request.Form["Profile"];
                 string[] proArr = profileString.Split(';');
                 //判斷基本資料填寫格式
-                if (!int.TryParse(proArr[1], out int phone) || !proArr[2].Contains('@') || !int.TryParse(proArr[3], out int age) || age > 200)
+                if (proArr.Length != 4 ||
+                    !int.TryParse(proArr[1], out int phone) || phone < 10000 || 
+                    !proArr[2].Contains('@') || 
+                    !int.TryParse(proArr[3], out int age) || (age > 150 || age < 1))
                 {
                     context.Response.ContentType = "text/plain";
                     context.Response.Write("errorInput");
