@@ -40,7 +40,7 @@
                             <td>Email</td>
                             <td>
                                 <asp:TextBox ID="txtMail" CssClass="Necessary" runat="server" TextMode="Email"></asp:TextBox>
-                            </td>  
+                            </td>
                             <td>&nbsp;</td>
                             <td>年齡</td>
                             <td>
@@ -147,12 +147,26 @@
             });
 
             $("input[id=btnCancel]").click(function () {
-                if (confirm("確定要取消作答?")){
+                if (confirm("確定要取消作答?")) {
                     window.location = "List.aspx";
                 }
             });
 
         })
+        function pushHistory() {
+            var state = {
+                title: "title",
+                url: "#"
+            }
+            window.history.pushState(state, "title", "#");
+        }
+        pushHistory();
+
+        window.addEventListener("popstate", function () {
+            if (confirm("不繼續作答了嗎?")) {
+                this.window.location = "List.aspx";
+            }
+        }, true);
 
     </script>
 </body>

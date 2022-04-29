@@ -55,13 +55,14 @@ namespace QuerySystem.ShareControls
 
         public void Bind(NameValueCollection collection)
         {
+            string url = Request.Url.LocalPath;
+            string paramKeyword = BuildQueryString(collection);
+
             int pageCount = (totalRows / pageSize);
             if (totalRows % pageSize > 0)
                 pageCount += 1;
-
-            //LocalPath: MapList.aspx            
-            string url = Request.Url.LocalPath;
-            string paramKeyword = BuildQueryString(collection);
+            if (pageIndex > pageCount)
+                Response.Redirect(url + "?Page=1" + paramKeyword);
 
             this.aLinkFirst.HRef = url + "?Page=1" + paramKeyword;
 

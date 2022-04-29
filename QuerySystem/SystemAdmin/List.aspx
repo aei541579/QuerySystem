@@ -27,7 +27,7 @@
                 <div class="col-lg-2">
                     <uc1:ucLeftColumn runat="server" ID="ucLeftColumn" />
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-10">
                     <table class="table table-borderless">
                         <tr>
                             <td width="10%">問卷標題</td>
@@ -60,7 +60,8 @@
                             </th>
                             <th>#</th>
                             <th>問卷</th>
-                            <th>狀態</th>
+                            <th>啟用狀態</th>
+                            <th>投票狀態</th>
                             <th>開始時間</th>
                             <th>結束時間</th>
                             <th>觀看統計</th>
@@ -80,7 +81,10 @@
                                             <asp:Label ID="lblQueryName" runat="server" Text='<%#Eval("QueryName") %>'></asp:Label></a>
                                     </td>
                                     <td>
-                                        <asp:Label ID="lblState" runat="server" Text='<%#Eval("IsActive") %>'></asp:Label>
+                                        <asp:Label ID="lblActive" runat="server" Text='<%#Eval("IsActive") %>'></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblState" runat="server" Text='<%#Eval("State") %>'></asp:Label>
                                     </td>
                                     <td>
                                         <asp:Label ID="lblStartTime" runat="server" Text='<%#Eval("StartTime")%>'></asp:Label>
