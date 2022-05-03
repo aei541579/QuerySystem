@@ -37,7 +37,7 @@ namespace QuerySystem.API
                     Name = proArr[0],
                     Mobile = proArr[1],
                     Email = proArr[2],
-                    Age = proArr[3],
+                    Age = age.ToString(),
                     QuestionnaireID = questionnaireID
                 };
                 HttpContext.Current.Session["personModel"] = person;

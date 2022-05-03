@@ -156,16 +156,16 @@
         function pushHistory() {
             var state = {
                 title: "title",
-                url: "#"
+                url: window.location.href
             }
-            window.history.pushState(state, "title", "#");
+            window.history.pushState(state, "title", window.location.href);
         }
         pushHistory();
 
         window.addEventListener("popstate", function () {
-            if (confirm("不繼續作答了嗎?")) {
+            alert("您將遺失您的作答資料")
                 this.window.location = "List.aspx";
-            }
+            
         }, true);
 
     </script>

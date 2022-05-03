@@ -20,7 +20,8 @@ namespace QuerySystem.SystemAdmin
         {
             HttpContext.Current.Session.RemoveAll();
             string pageIndexText = this.Request.QueryString["Page"];
-            _pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+            if (!int.TryParse(pageIndexText, out _pageIndex))
+                _pageIndex = 1;
 
             if (!IsPostBack)
             {

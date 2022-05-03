@@ -20,7 +20,8 @@ namespace QuerySystem.SystemAdmin
         {
             string IDstring = Request.QueryString["ID"];
             string pageIndexText = this.Request.QueryString["Page"];
-            int pageIndex = (string.IsNullOrWhiteSpace(pageIndexText)) ? 1 : Convert.ToInt32(pageIndexText);
+            if (!int.TryParse(pageIndexText, out int pageIndex))
+                pageIndex = 1;            
 
             if (Guid.TryParse(IDstring, out _questionnaireID))
             {

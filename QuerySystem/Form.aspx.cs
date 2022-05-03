@@ -22,7 +22,14 @@ namespace QuerySystem
             if (Guid.TryParse(IDstring, out _questionnaireID))
             {
                 _answerList = HttpContext.Current.Session["answerModel"] as List<AnswerModel>;
-                _isEditMode = _answerList == null ? false : true;
+                if (_answerList != null && _answerList[0].QuestionnaireID == _questionnaireID)
+                    _isEditMode = true;
+                else
+                {
+                    HttpContext.Current.Session.Remove("answerModel");
+                    _isEditMode = false;
+                }
+
 
                 QuestionnaireModel questionnaire = _mgr.GetQuestionnaire(_questionnaireID);
                 if (questionnaire == null || questionnaire.IsActive == ActiveType.已關閉)
@@ -114,7 +121,7 @@ namespace QuerySystem
                 ? _answerList.FindAll(x => x.QuestionNo == question.QuestionNo)
                 : new List<AnswerModel>();
             CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + question.QuestionNo; 
+            checkBoxList.ID = "Q" + question.QuestionNo;
             if (question.Necessary)
                 checkBoxList.CssClass = "Necessary";
             this.plcDynamic.Controls.Add(checkBoxList);
