@@ -22,7 +22,7 @@ namespace QuerySystem
             HttpContext.Current.Session.RemoveAll();
             string pageIndexText = this.Request.QueryString["Page"];
             if (!int.TryParse(pageIndexText, out _pageIndex))
-                _pageIndex = 1;
+                _pageIndex = 1;            
 
             if (!IsPostBack)
             {

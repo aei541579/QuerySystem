@@ -59,8 +59,9 @@ namespace QuerySystem.ShareControls
             string paramKeyword = BuildQueryString(collection);
 
             int pageCount = (totalRows / pageSize);
-            if (totalRows % pageSize > 0)
+            if (pageCount == 0 || totalRows % pageSize > 0)
                 pageCount += 1;
+
             if (pageIndex > pageCount)
                 Response.Redirect(url + "?Page=1" + paramKeyword);
 
