@@ -24,7 +24,7 @@ namespace QuerySystem.SystemAdmin
         protected void Page_Load(object sender, EventArgs e)
         {
             _questionSession = HttpContext.Current.Session["qusetionModel"] as List<QuestionModel>;
-            
+
             //若session有值，代表為新增模式
             _questionnaire = HttpContext.Current.Session["QuestionnaireSession"] as QuestionnaireModel;
             _isCreateMode = (_questionnaire != null) ? true : false;
@@ -227,6 +227,7 @@ namespace QuerySystem.SystemAdmin
                 }
             }
             InitRpt(needList);
+            InitTextbox();
             HttpContext.Current.Session["qusetionModel"] = needList;
         }
 
@@ -302,6 +303,7 @@ namespace QuerySystem.SystemAdmin
             {
                 InitRpt(new List<QuestionModel>());
             }
+            InitTextbox();
         }
 
         protected void btnEditQuestion_Click(object sender, EventArgs e)

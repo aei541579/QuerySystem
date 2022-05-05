@@ -44,7 +44,7 @@
                             <td>&nbsp;</td>
                             <td>年齡</td>
                             <td>
-                                <asp:TextBox ID="txtAge" CssClass="Necessary" runat="server" TextMode="Number"></asp:TextBox>
+                                <asp:TextBox ID="txtAge" CssClass="Necessary" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
@@ -73,7 +73,7 @@
             $("input[id*=Q][type=text]").attr('style', 'margin-bottom:25px;');
 
             $("input[id=btnSubmit]").click(function () {
-                var inputCorrect = false;
+                var inputCorrect = true;
                 var Neclist = $(".Necessary").get();
                 for (var necItem of Neclist) {
                     if (necItem.tagName == 'INPUT') {
@@ -99,7 +99,7 @@
                         }
                     }
                 }
-                inputCorrect = true;
+                //inputCorrect = true;
 
 
                 if (inputCorrect) {
@@ -133,8 +133,8 @@
                             if (txtMsg == "noAnswer") {
                                 alert("您尚未作答");
                             }
-                            if (txtMsg == "errorInput") {
-                                alert("基本資料填寫格式不正確");
+                            else {
+                                alert(txtMsg);
                             }
                         },
                         error: function (msg) {

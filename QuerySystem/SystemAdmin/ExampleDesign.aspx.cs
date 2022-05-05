@@ -162,6 +162,7 @@ namespace QuerySystem.SystemAdmin
                 }
             }
             InitRpt(needList);
+            InitTextbox();
             HttpContext.Current.Session["qusetionModel"] = needList;
         }
 
